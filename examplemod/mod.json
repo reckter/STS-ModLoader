@@ -1,0 +1,10 @@
+{
+    "modName": "Example Mod",
+    "modPackage": "examplemod",
+    "modDescription": "An example mod",
+    "modAuthor": "Example",
+    "modVersion": "0.0.1",
+    "customCardIds": [
+        "Test1"
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "addCards": [
+        "Test1",
+        "Test1",
+        "Test1"
+    ],
+    "removeCards": [
+    ],
+    "addRelics": [
+        "Anchor"
+    ],
+    "removeRelics": [
+        "Burning Blood"
+    ]
+}
