@@ -11,6 +11,8 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.helpers.CardHelper;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.monsters.MonsterInfo;
 import com.megacrit.cardcrawl.screens.CharSelectInfo;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
 
@@ -28,12 +30,13 @@ import java.util.HashMap;
 
 public class ModLoader {
     private static final Logger logger = LogManager.getLogger(ModLoader.class.getName());
-    
+      
+    public static String modRootPath;
+    private static ClassLoader loader;
     private static boolean isFirstLoad = true;
     
-    private static CardCrawlGame game;
-    private static String modRootPath;
     private static ArrayList<ModContainer> mods;
+    
     private static HashMap<String, Integer> specialHealth = new HashMap<String, Integer>();
     private static String[] specialEnergy = {"Philosopher's Stone", "Velvet Choker", "Sozu", "Gremlin Horn", "Cursed Key", "Lantern"};   
     
@@ -141,6 +144,21 @@ public class ModLoader {
         }
     }
     
+    // exordiumWeakMonsterHook -
+    public static void exordiumWeakMonsterHook(ArrayList<MonsterInfo> monsters) {
+        
+    }
+    
+    // exordiumStrongMonsterHook -
+    public static void exordiumStrongMonsterHook(ArrayList<MonsterInfo> monsters) {
+        
+    }
+    
+    // exordiumEliteMonsterHook -
+    public static void exordiumEliteMonsterHook(ArrayList<MonsterInfo> monsters) {
+        
+    }
+    
     // loadMods -
     private static ArrayList<ModContainer> loadMods() {
         ArrayList<ModContainer> mods = new ArrayList<ModContainer>();   
@@ -152,7 +170,7 @@ public class ModLoader {
             String modPackage = modRoots[i].getName();
             String modPath = modRootPath + modPackage;
             
-            if (modPackage.equals("modloader")) continue;
+            if (modPackage.equals("modloader") || modPackage.charAt(0) == '.') continue;
 
             // Initialize GSON
             GsonBuilder gsonBuilder = new GsonBuilder();           
@@ -194,17 +212,7 @@ public class ModLoader {
     // generateCustomCards -
     private static void generateCustomCards() {
         logger.info("Generating custom cards");
-        
-        // Construct ClassLoader
-        ClassLoader loader = null;     
-        try {
-            File modRoot = new File(modRootPath);
-            URL[] urls = new URL[] {modRoot.toURI().toURL()};
-            loader = new URLClassLoader(urls);
-        } catch (Exception e) {
-            logger.error("Exception occured when constructing card ClassLoader: ", e);
-        }
-        
+
         for (ModContainer mod : mods) {
             for (String id : mod.customCardIds) {
                 AbstractCard customCard = null; 
@@ -212,6 +220,7 @@ public class ModLoader {
                 try {
                     Object customCardObj = loader.loadClass(mod.modPackage + ".cards." + id).newInstance();
                     customCard = (AbstractCard) customCardObj;
+                    mod.loadedCustomCards.add(customCard);
                 } catch (Exception e) {
                     logger.error(mod.modName + ": Exception occured when generating card " + id, e);
                 }
@@ -234,6 +243,33 @@ public class ModLoader {
         }
         
         logger.info("All custom cards generated");
+        logger.info("");
+    }
+    
+    private static void generateCustomMonsters() {
+        logger.info("Generating custom monsters");
+        
+        for (ModContainer mod : mods) {
+            for (CustomMonster m : mod.customMonsters) {
+                AbstractMonster customMonster = null;
+                
+                try {
+                    Object customMonsterObj = loader.loadClass(mod.modPackage + ".monsters." + m.id).newInstance();
+                    customMonster = (AbstractMonster) customMonsterObj;
+                    mod.loadedCustomMonsters.add(customMonster);
+                } catch (Exception e) {
+                    logger.error(mod.modName + ": Exception occured when generating monster " + m.id, e);
+                }
+                
+                if (customMonster != null) {
+                    logger.info(mod.modName + ": " + m.id + " generated");
+                } else {
+                    logger.error(mod.modName + ": " + m.id + " could not be generated, skipping");
+                }
+            }
+        }
+        
+        logger.info("All custom monsters generated");
         logger.info("");
     }
     
@@ -315,5 +351,17 @@ public class ModLoader {
         }
         
         return fileString;
+    }
+    
+    // constructClassLoader - Helper function that builds a ClassLoader
+    private static void constructClassLoader() {
+        loader = null;     
+        try {
+            File modRoot = new File(modRootPath);
+            URL[] urls = new URL[] {modRoot.toURI().toURL()};
+            loader = new URLClassLoader(urls);
+        } catch (Exception e) {
+            logger.error("Exception occured when constructing ClassLoader: ", e);
+        }
     }
 }
