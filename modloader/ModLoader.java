@@ -56,6 +56,7 @@ public class ModLoader {
         // First time setup
         if (isFirstLoad) {
             modRootPath = path;  
+            constructClassLoader();
             
             CardCrawlGame.modLoaderActive = true;
             CardCrawlGame.VERSION_NUM += " [MODLOADER ACTIVE]";
@@ -81,6 +82,7 @@ public class ModLoader {
         
         mods = loadMods();       
         generateCustomCards();
+        generateCustomMonsters();
         
         isFirstLoad = false;
         logger.info("===================================================================");
@@ -171,7 +173,8 @@ public class ModLoader {
             String modPath = modRootPath + modPackage;
             
             if (modPackage.equals("modloader") || modPackage.charAt(0) == '.') continue;
-
+            //if (!modPackage.equals("***")) continue;
+            
             // Initialize GSON
             GsonBuilder gsonBuilder = new GsonBuilder();           
             Gson gson = gsonBuilder.create();
@@ -180,7 +183,8 @@ public class ModLoader {
             String modJson = readFile(modPath + "/mod.json");
             if (modJson != null) {
                 ModContainer mod = gson.fromJson(modJson, ModContainer.class);
-
+                logger.info(modPackage + " loaded main");
+                
                 String ironcladJson = readFile(modPath + "/ironclad.json");
                 if (ironcladJson != null) {
                     CharacterMod ironclad = gson.fromJson(ironcladJson, CharacterMod.class);

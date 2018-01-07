@@ -15,21 +15,20 @@ public class ModContainer {
     public String modVersion;
     
     public List<String> customCardIds;
-    public ArrayList<AbstractCard> loadedCustomCards;
+    public ArrayList<Object> loadedCustomCards;
     
     public List<CustomMonster> customMonsters;
-    public ArrayList<AbstractMonster> loadedCustomMonsters;
+    public ArrayList<Object> loadedCustomMonsters;
     
     public HashMap<String, CharacterMod> characterMods;
     
     public ModContainer() {
         this.customCardIds = new ArrayList<String>();
-        this.loadedCustomCards = new ArrayList<AbstractCard>();
+        this.loadedCustomCards = new ArrayList<Object>();
         
         this.customMonsters = new ArrayList<CustomMonster>();
-        this.loadedCustomMonsters = new ArrayList<AbstractMonster>();
+        this.loadedCustomMonsters = new ArrayList<Object>();
         
-        this.characterMods = new HashMap<String, CharacterMod>();
-        
+        this.characterMods = new HashMap<String, CharacterMod>();     
     }
 }
