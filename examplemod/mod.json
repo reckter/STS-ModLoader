@@ -3,8 +3,14 @@
     "modPackage": "examplemod",
     "modDescription": "An example mod",
     "modAuthor": "Example",
-    "modVersion": "0.0.1",
+    "modVersion": "0.0.3",
     "customCardIds": [
         "Test1"
-    ]
+    ],
+    "customMonsters": [{
+        "id": "TestSquare",
+        "floor": "EXORDIUM",
+        "group": "WEAK",
+        "weight": 50.0
+    }]
 }
