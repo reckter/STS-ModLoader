@@ -1,4 +1,4 @@
-package com.modloader;
+package modloader;
 
 import java.util.ArrayList;
 import java.util.List;
