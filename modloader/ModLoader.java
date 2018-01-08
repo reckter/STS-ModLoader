@@ -15,6 +15,7 @@ import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.monsters.MonsterGroup;
 import com.megacrit.cardcrawl.monsters.MonsterInfo;
 import com.megacrit.cardcrawl.screens.CharSelectInfo;
+import com.megacrit.cardcrawl.screens.mainMenu.CardLibraryScreen;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
 
 import org.apache.logging.log4j.Logger;
@@ -35,7 +36,6 @@ public class ModLoader {
       
     public static String modRootPath;
     private static ClassLoader loader;
-    private static boolean isFirstLoad = true;
     
     private static ArrayList<ModContainer> mods;
     
@@ -55,50 +55,41 @@ public class ModLoader {
         logger.info("========================= MOD LOADER INIT =========================");
         logger.info("");
         
-        // First time setup
-        if (isFirstLoad) {
-            modRootPath = path;  
-            hijackClassLoader();
-            
-            CardCrawlGame.modLoaderActive = true;
-            CardCrawlGame.VERSION_NUM += " [MODLOADER ACTIVE]";
-            Settings.isModded = true;
-            
-            if (isDev) {
-                CardCrawlGame.splashScreen.isDone = true;
-                Settings.ACTION_DUR_FAST = 0.1f;
-                Settings.ACTION_DUR_MED = 0.2f;
-                Settings.ACTION_DUR_LONG = 0.3f;
-                Settings.ACTION_DUR_XLONG = 0.5f;
-            } else {
-                Settings.ACTION_DUR_FAST = 0.33f;
-                Settings.ACTION_DUR_MED = 0.5f;
-                Settings.ACTION_DUR_LONG = 1.0f;
-                Settings.ACTION_DUR_XLONG = 1.5f;
-            }
-            
-            specialHealth.put("Strawberry", 7);
-            specialHealth.put("Pear", 10);
-            specialHealth.put("Mango", 14);
+        modRootPath = path;  
+        hijackClassLoader();
+        
+        CardCrawlGame.modLoaderActive = true;
+        CardCrawlGame.VERSION_NUM += " [MODLOADER ACTIVE]";
+        Settings.isModded = true;
+        
+        if (isDev) {
+            CardCrawlGame.splashScreen.isDone = true;
+            Settings.ACTION_DUR_FAST = 0.1f;
+            Settings.ACTION_DUR_MED = 0.2f;
+            Settings.ACTION_DUR_LONG = 0.3f;
+            Settings.ACTION_DUR_XLONG = 0.5f;
+        } else {
+            Settings.ACTION_DUR_FAST = 0.33f;
+            Settings.ACTION_DUR_MED = 0.5f;
+            Settings.ACTION_DUR_LONG = 1.0f;
+            Settings.ACTION_DUR_XLONG = 1.5f;
         }
+        
+        // This is missing some
+        specialHealth.put("Strawberry", 7);
+        specialHealth.put("Pear", 10);
+        specialHealth.put("Mango", 14);
 
         mods = loadMods();       
         generateCustomCards();
         loadCustomMonsters();
         
-        isFirstLoad = false;
         logger.info("===================================================================");
     }
     
     // updateHook -
     public static void updateHook() {
-        if (Gdx.input.isKeyJustPressed(Keys.F5)) {
-            ModLoader.initialize(modRootPath);
-        }
-        
-        if (Gdx.input.isKeyJustPressed(Keys.F6)) {
-            logger.info("isModded: " + Settings.isModded);
-        }
+
     }
     
     // startGameHook -
@@ -273,7 +264,7 @@ public class ModLoader {
                 }
                 
                 if (customCard != null) {
-                    CardLibrary.cards.remove(id);
+                    CardLibrary.cards.remove(id); // I dont think this is enough to enable overriding existing cards - need to test
                     CardLibrary.add(customCard);
                     UnlockTracker.unlockCard(id);
                     logger.info(mod.modName + ": " + id + " generated");
@@ -283,19 +274,13 @@ public class ModLoader {
             }
         }
         
-        // Cleanup
-        if (!isFirstLoad) {
-            CardCrawlGame.mainMenuScreen.cardLibraryScreen.initialize();
-            CardCrawlGame.mainMenuScreen.cardLibraryScreen.sortOnOpen();
-        }
-        
         logger.info("All custom cards generated");
         logger.info("");
     }
     
     // loadCustomMonsters -
     private static void loadCustomMonsters() {
-        logger.info("Generating custom monsters");
+        logger.info("Loading custom monsters");
         
         for (ModContainer mod : mods) {
             for (CustomMonster m : mod.customMonsters) {
@@ -310,7 +295,7 @@ public class ModLoader {
             }
         }
         
-        logger.info("All custom monsters generated");
+        logger.info("All custom monsters loaded");
         logger.info("");
     }
     
