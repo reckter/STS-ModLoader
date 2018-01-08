@@ -12,6 +12,7 @@ import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.helpers.CardHelper;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.monsters.MonsterGroup;
 import com.megacrit.cardcrawl.monsters.MonsterInfo;
 import com.megacrit.cardcrawl.screens.CharSelectInfo;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
@@ -22,6 +23,7 @@ import org.apache.logging.log4j.LogManager;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
@@ -41,7 +43,7 @@ public class ModLoader {
     private static String[] specialEnergy = {"Philosopher's Stone", "Velvet Choker", "Sozu", "Gremlin Horn", "Cursed Key", "Lantern"};   
     
     // Flags
-    private static final boolean isDev = false;
+    private static final boolean isDev = true;
     
     // initialize - Reinitializes with the existing root path
     public static void initialize() {
@@ -56,7 +58,7 @@ public class ModLoader {
         // First time setup
         if (isFirstLoad) {
             modRootPath = path;  
-            constructClassLoader();
+            hijackClassLoader();
             
             CardCrawlGame.modLoaderActive = true;
             CardCrawlGame.VERSION_NUM += " [MODLOADER ACTIVE]";
@@ -79,10 +81,10 @@ public class ModLoader {
             specialHealth.put("Pear", 10);
             specialHealth.put("Mango", 14);
         }
-        
+
         mods = loadMods();       
         generateCustomCards();
-        generateCustomMonsters();
+        loadCustomMonsters();
         
         isFirstLoad = false;
         logger.info("===================================================================");
@@ -146,19 +148,61 @@ public class ModLoader {
         }
     }
     
-    // exordiumWeakMonsterHook -
+    // exordiumWeakMonsterHook - add custom encounters to exordium weak pool
     public static void exordiumWeakMonsterHook(ArrayList<MonsterInfo> monsters) {
-        
+        for (ModContainer mod : mods) {
+            for (CustomMonster m : mod.customMonsters) {
+                if (m.group == CustomMonster.Group.WEAK && m.floor == CustomMonster.Floor.EXORDIUM) {
+                    monsters.add(new MonsterInfo(m.id, m.weight));
+                    logger.info("Added custom monster to exordium weak pool: " + m.id + "(" + m.weight + ")");
+                }
+            }
+        }
     }
     
-    // exordiumStrongMonsterHook -
+    // exordiumStrongMonsterHook - add custom encounters to exordium strong pool
     public static void exordiumStrongMonsterHook(ArrayList<MonsterInfo> monsters) {
-        
+        for (ModContainer mod : mods) {
+            for (CustomMonster m : mod.customMonsters) {
+                if (m.group == CustomMonster.Group.STRONG && m.floor == CustomMonster.Floor.EXORDIUM) {
+                    monsters.add(new MonsterInfo(m.id, m.weight));
+                    logger.info("Added custom monster to exordium strong pool: " + m.id);
+                }
+            }
+        }
     }
     
-    // exordiumEliteMonsterHook -
+    // exordiumEliteMonsterHook - add custom encounters to exordium elite pool
     public static void exordiumEliteMonsterHook(ArrayList<MonsterInfo> monsters) {
+        for (ModContainer mod : mods) {
+            for (CustomMonster m : mod.customMonsters) {
+                if (m.group == CustomMonster.Group.ELITE && m.floor == CustomMonster.Floor.EXORDIUM) {
+                    monsters.add(new MonsterInfo(m.id, m.weight));
+                    logger.info("Added custom monster to exordium elite pool: " + m.id);
+                }
+            }
+        }
+    }
+    
+    // customMonsterEncounterHook - generate monster groups for custom monsters
+    // TODO: Add support for groups rather than only single monsters
+    public static MonsterGroup customEncounterHook(String key) {
+        for (ModContainer mod : mods) {
+            Class monsterClass = mod.loadedCustomMonsterClasses.get(key);
+            if (monsterClass != null) {
+                try {
+                    MonsterGroup customMonsterGroup = new MonsterGroup((AbstractMonster)monsterClass.getDeclaredConstructor(float.class, float.class).newInstance(0.0f, 0.0f));
+                    logger.info("Created custom monster group: " + key);
+                    return customMonsterGroup;
+                } catch (Exception e) {
+                    logger.error("Exception in customEncounterHook", e);
+                }
+            }
+        }
         
+        // Apology slime
+        logger.info("Could not find MonsterGroup: " + key + " (might be vanilla)");
+        return null;
     }
     
     // loadMods -
@@ -173,7 +217,6 @@ public class ModLoader {
             String modPath = modRootPath + modPackage;
             
             if (modPackage.equals("modloader") || modPackage.charAt(0) == '.') continue;
-            //if (!modPackage.equals("***")) continue;
             
             // Initialize GSON
             GsonBuilder gsonBuilder = new GsonBuilder();           
@@ -250,26 +293,20 @@ public class ModLoader {
         logger.info("");
     }
     
-    private static void generateCustomMonsters() {
+    // loadCustomMonsters -
+    private static void loadCustomMonsters() {
         logger.info("Generating custom monsters");
         
         for (ModContainer mod : mods) {
             for (CustomMonster m : mod.customMonsters) {
-                AbstractMonster customMonster = null;
-                
                 try {
-                    Object customMonsterObj = loader.loadClass(mod.modPackage + ".monsters." + m.id).newInstance();
-                    customMonster = (AbstractMonster) customMonsterObj;
-                    mod.loadedCustomMonsters.add(customMonster);
+                    Class customMonsterClass = loader.loadClass(mod.modPackage + ".monsters." + m.id);
+                    mod.loadedCustomMonsterClasses.put(m.id, customMonsterClass);
                 } catch (Exception e) {
-                    logger.error(mod.modName + ": Exception occured when generating monster " + m.id, e);
+                    logger.error(mod.modName + ": Exception occured when loading monster " + m.id, e);
                 }
                 
-                if (customMonster != null) {
-                    logger.info(mod.modName + ": " + m.id + " generated");
-                } else {
-                    logger.error(mod.modName + ": " + m.id + " could not be generated, skipping");
-                }
+                logger.info(mod.modName + ": " + m.id + " loaded");
             }
         }
         
@@ -336,7 +373,6 @@ public class ModLoader {
     // readFile - Helper function that returns a String representation of the contents of the file located at path
     // returns null if the file can not be accessed/found or is a folder
     private static String readFile(String path) {
-        // Check if the file exists
         File f = new File(path);
         if (!f.exists() || f.isDirectory()) return null;
         
@@ -357,15 +393,19 @@ public class ModLoader {
         return fileString;
     }
     
-    // constructClassLoader - Helper function that builds a ClassLoader
-    private static void constructClassLoader() {
-        loader = null;     
+    // hijackClassLoader - Hijack the system ClassLoader for our use so we can cast properly
+    // If anyone knows a way to make casting work without hijacking the system ClassLoader, let me know
+    private static void hijackClassLoader() {
         try {
             File modRoot = new File(modRootPath);
-            URL[] urls = new URL[] {modRoot.toURI().toURL()};
-            loader = new URLClassLoader(urls);
+            
+            loader = ClassLoader.getSystemClassLoader();
+            Class<URLClassLoader> loaderClass = URLClassLoader.class;
+            Method addUrl = loaderClass.getDeclaredMethod("addURL", new Class[]{URL.class});
+            addUrl.setAccessible(true);
+            addUrl.invoke(loader, new Object[]{modRoot.toURI().toURL()});
         } catch (Exception e) {
-            logger.error("Exception occured when constructing ClassLoader: ", e);
+            logger.error("Exception occured while hijacking system ClassLoader: ", e);
         }
     }
 }

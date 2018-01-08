@@ -6,13 +6,13 @@ public class CustomMonster {
     public Group group;
     public float weight;
     
-    private enum Floor {
+    public enum Floor {
         EXORDIUM,
         CITY,
         BEYOND
     }
 
-    private enum Group {
+    public enum Group {
         WEAK,
         STRONG,
         ELITE

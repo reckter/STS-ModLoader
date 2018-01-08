@@ -27,13 +27,13 @@ public class TestSquare extends AbstractMonster {
     public static final float HBY = 0.0f;
     public static final float HBW = 200.0f;
     public static final float HBH = 200.0f; 
-    public static final String IMG = "examplemod/testsquare.png";
+    public static final String IMG = "examplemod/monsters/testsquare.png";
 
     private static final byte HIT = 1;
     private static final byte GUARD = 2;
     
     public TestSquare(float x, float y) {
-        super(NAME, ID, AbstractDungeon.monsterHpRng.random(HP_MIN, HP_MAX), HBX, HBY, HBW, HBH, null, x, y);
+        super(NAME, ID, AbstractDungeon.monsterHpRng.random(HP_MIN, HP_MAX), HBX, HBY, HBW, HBH, "status/beta", x, y);
         damage.add(new DamageInfo(this, HIT_DMG));
         damage.add(new DamageInfo(this, GUARD_DMG));
         
@@ -59,12 +59,10 @@ public class TestSquare extends AbstractMonster {
     
     @Override
     protected void getMove(int num) {
-        // 10% chance to guard each turn, always guards first two turns and if it hasn't in the past 2 turns
-        if (num >= 90 || !this.lastTwoMoves(GUARD)) {
-            
+        // 50/50 guard or hit
+        if (num >= 50) { 
             setMove(GUARD, AbstractMonster.Intent.ATTACK_DEFEND, GUARD_DMG);
         }
-        // Otherwise hit
         else {
             setMove(HIT, AbstractMonster.Intent.ATTACK, HIT_DMG);
         }
