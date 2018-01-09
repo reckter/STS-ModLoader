@@ -1,0 +1,19 @@
+37a38,40
+> // ModLoader imports
+> import modloader.ModLoader;
+> 
+118a122,125
+>         
+>         // ModLoader hook
+>         if (CardCrawlGame.modLoaderActive) ModLoader.exordiumWeakMonsterHook(monsters);
+>         
+130a138,141
+>         
+>         // ModLoader hook
+>         if (CardCrawlGame.modLoaderActive) ModLoader.exordiumStrongMonsterHook(monsters);
+>         
+137a149,152
+>         
+>         // ModLoader hook
+>         if (CardCrawlGame.modLoaderActive) ModLoader.exordiumEliteMonsterHook(monsters);
+>         
