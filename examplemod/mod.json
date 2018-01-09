@@ -3,14 +3,29 @@
     "modPackage": "examplemod",
     "modDescription": "An example mod",
     "modAuthor": "Example",
-    "modVersion": "0.0.3",
+    "modVersion": "0.0.5",
     "customCardIds": [
         "Test1"
     ],
-    "customMonsters": [{
+    "customMonsterIds": [
+        "TestSquare"
+    ],
+    "customEncounters": [{
         "id": "TestSquare",
         "floor": "EXORDIUM",
         "group": "WEAK",
-        "weight": 50.0
+        "weight": 25.0,
+        "monsters": [
+            "TestSquare"
+        ]
+    }, {
+        "id": "2 TestSquares",
+        "floor": "EXORDIUM",
+        "group": "WEAK",
+        "weight": 25.0,
+        "monsters": [
+            "TestSquare",
+            "TestSquare"
+        ]
     }]
 }

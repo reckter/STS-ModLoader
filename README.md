@@ -1,6 +1,7 @@
 # STS ModLoader #
 Currently supported version: `[EARLY_ACCESS_011] (01-08-2018) BETA`
-Note: Patches may not be fully up to date, they are currently manually generated. Patches will only be created for working versions.
+
+Note: Patches may not be fully up to date, they are currently manually generated. I generally try to update the patches each time a new beta version is released.
 
 ## Install instructions: ##
 1. Clone repo
