@@ -1,13 +1,11 @@
 package modloader;
 
-import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.monsters.AbstractMonster;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class ModContainer {
+    // Deserialized by GSON
     public String modName;
     public String modPackage;
     public String modDescription;
@@ -15,20 +13,21 @@ public class ModContainer {
     public String modVersion;
     
     public List<String> customCardIds;
-    public ArrayList<Object> loadedCustomCards;
+    public List<String> customMonsterIds;
+    public List<CustomEncounter> customEncounters;
     
-    public List<CustomMonster> customMonsters;
-    public HashMap<String, Class> loadedCustomMonsterClasses;
-    
+    // Manually populated
+    public ArrayList<Object> customCards; // Things break if this is ArrayList<AbstractCard> - no idea why
+    public HashMap<String, Class> customMonsters;
     public HashMap<String, CharacterMod> characterMods;
     
     public ModContainer() {
         customCardIds = new ArrayList<String>();
-        loadedCustomCards = new ArrayList<Object>();
+        customMonsterIds = new ArrayList<String>();
+        customEncounters = new ArrayList<CustomEncounter>();
         
-        customMonsters = new ArrayList<CustomMonster>();
-        loadedCustomMonsterClasses = new HashMap<String, Class>();
-        
+        customCards = new ArrayList<Object>();
+        customMonsters = new HashMap<String, Class>();
         characterMods = new HashMap<String, CharacterMod>();     
     }
 }

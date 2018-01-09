@@ -138,61 +138,60 @@ public class ModLoader {
             }
         }
     }
-    
-    // exordiumWeakMonsterHook - add custom encounters to exordium weak pool
-    public static void exordiumWeakMonsterHook(ArrayList<MonsterInfo> monsters) {
+
+    // monsterPoolHook - Adds all CustomEncounters for the specified floor and group to the monsters List
+    public static void monsterPoolHook(ArrayList<MonsterInfo> monsters, CustomEncounter.Floor floor, CustomEncounter.Group group) {
+        logger.info("monsterPoolHook: " + floor + " " + group);
         for (ModContainer mod : mods) {
-            for (CustomMonster m : mod.customMonsters) {
-                if (m.group == CustomMonster.Group.WEAK && m.floor == CustomMonster.Floor.EXORDIUM) {
-                    monsters.add(new MonsterInfo(m.id, m.weight));
-                    logger.info("Added custom monster to exordium weak pool: " + m.id + "(" + m.weight + ")");
+            for (CustomEncounter ce : mod.customEncounters) {
+                if (ce.floor == floor && ce.group == group) {
+                    monsters.add(new MonsterInfo(ce.id, ce.weight));
+                    logger.info("Added CustomEncounter to " + floor + " " + group + " pool: " + ce.id + "(" + ce.weight + ")");
                 }
             }
         }
     }
     
-    // exordiumStrongMonsterHook - add custom encounters to exordium strong pool
-    public static void exordiumStrongMonsterHook(ArrayList<MonsterInfo> monsters) {
-        for (ModContainer mod : mods) {
-            for (CustomMonster m : mod.customMonsters) {
-                if (m.group == CustomMonster.Group.STRONG && m.floor == CustomMonster.Floor.EXORDIUM) {
-                    monsters.add(new MonsterInfo(m.id, m.weight));
-                    logger.info("Added custom monster to exordium strong pool: " + m.id);
-                }
-            }
-        }
-    }
-    
-    // exordiumEliteMonsterHook - add custom encounters to exordium elite pool
-    public static void exordiumEliteMonsterHook(ArrayList<MonsterInfo> monsters) {
-        for (ModContainer mod : mods) {
-            for (CustomMonster m : mod.customMonsters) {
-                if (m.group == CustomMonster.Group.ELITE && m.floor == CustomMonster.Floor.EXORDIUM) {
-                    monsters.add(new MonsterInfo(m.id, m.weight));
-                    logger.info("Added custom monster to exordium elite pool: " + m.id);
-                }
-            }
-        }
-    }
-    
-    // customMonsterEncounterHook - generate monster groups for custom monsters
-    // TODO: Add support for groups rather than only single monsters
+    // customMonsterEncounterHook - generate a MonsterGroup for a CustomEncounter
     public static MonsterGroup customEncounterHook(String key) {
         for (ModContainer mod : mods) {
-            Class monsterClass = mod.loadedCustomMonsterClasses.get(key);
-            if (monsterClass != null) {
+            CustomEncounter encounter = null;
+            for (CustomEncounter ce : mod.customEncounters) {
+                if (ce.id.equals(key)) {
+                    encounter = ce;
+                    break;
+                }
+            }
+            
+            if (encounter != null) {
                 try {
-                    MonsterGroup customMonsterGroup = new MonsterGroup((AbstractMonster)monsterClass.getDeclaredConstructor(float.class, float.class).newInstance(0.0f, 0.0f));
-                    logger.info("Created custom monster group: " + key);
-                    return customMonsterGroup;
+                    if (encounter.monsters.size() == 1) {
+                        Class monsterClass = Class.forName(mod.modPackage + ".monsters." + encounter.monsters.get(0));
+                        AbstractMonster monster = (AbstractMonster) monsterClass.getDeclaredConstructor(float.class, float.class).newInstance(0.0f, 0.0f);
+                        logger.info("Created custom monster group: " + key);
+                        return new MonsterGroup(monster);
+                    } else {
+                        ArrayList<AbstractMonster> monsters = new ArrayList<AbstractMonster>();
+                        float offx = 100.0f;
+                        for (String mcName : encounter.monsters) {
+                            Class monsterClass = Class.forName(mod.modPackage + ".monsters." + mcName); 
+                            float hbx = (float) monsterClass.getDeclaredField("HBW").get(null);
+                            offx -= (hbx*1.1f);
+                            monsters.add((AbstractMonster) monsterClass.getDeclaredConstructor(float.class, float.class).newInstance(offx+(hbx*1.1f), 0.0f));
+                        }
+                        
+                        AbstractMonster[] monstersArray = new AbstractMonster[monsters.size()];
+                        monstersArray = monsters.toArray(monstersArray);
+                        logger.info("Created custom monster group: " + key);
+                        return new MonsterGroup(monstersArray);
+                    }     
                 } catch (Exception e) {
                     logger.error("Exception in customEncounterHook", e);
-                }
+                } 
             }
         }
         
-        // Apology slime
-        logger.info("Could not find MonsterGroup: " + key + " (might be vanilla)");
+        logger.info("Did not find custom encounter: " + key);
         return null;
     }
     
@@ -210,7 +209,7 @@ public class ModLoader {
             if (modPackage.equals("modloader") || modPackage.charAt(0) == '.') continue;
             
             // Initialize GSON
-            GsonBuilder gsonBuilder = new GsonBuilder();           
+            GsonBuilder gsonBuilder = new GsonBuilder();
             Gson gson = gsonBuilder.create();
             
             // Read and parse JSON
@@ -256,9 +255,8 @@ public class ModLoader {
                 AbstractCard customCard = null; 
                 
                 try {
-                    Object customCardObj = loader.loadClass(mod.modPackage + ".cards." + id).newInstance();
-                    customCard = (AbstractCard) customCardObj;
-                    mod.loadedCustomCards.add(customCard);
+                    customCard = (AbstractCard) loader.loadClass(mod.modPackage + ".cards." + id).newInstance();
+                    mod.customCards.add(customCard);
                 } catch (Exception e) {
                     logger.error(mod.modName + ": Exception occured when generating card " + id, e);
                 }
@@ -283,15 +281,15 @@ public class ModLoader {
         logger.info("Loading custom monsters");
         
         for (ModContainer mod : mods) {
-            for (CustomMonster m : mod.customMonsters) {
+            for (String id : mod.customMonsterIds) {
                 try {
-                    Class customMonsterClass = loader.loadClass(mod.modPackage + ".monsters." + m.id);
-                    mod.loadedCustomMonsterClasses.put(m.id, customMonsterClass);
+                    Class customMonsterClass = loader.loadClass(mod.modPackage + ".monsters." + id);
+                    mod.customMonsters.put(id, customMonsterClass);
                 } catch (Exception e) {
-                    logger.error(mod.modName + ": Exception occured when loading monster " + m.id, e);
+                    logger.error(mod.modName + ": Exception occured when loading monster " + id, e);
                 }
                 
-                logger.info(mod.modName + ": " + m.id + " loaded");
+                logger.info(mod.modName + ": " + id + " loaded");
             }
         }
         
