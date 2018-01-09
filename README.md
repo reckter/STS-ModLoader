@@ -1,4 +1,5 @@
 # STS ModLoader #
+Currently supported version: `[EARLY_ACCESS_011] (01-08-2018) BETA`
 ## Install instructions: ##
 1. Clone repo
 2. Grab desktop-1.0.jar from your Slay the Spire steam folder and do one of the following:
