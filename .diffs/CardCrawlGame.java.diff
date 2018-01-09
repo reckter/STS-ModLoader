@@ -1,0 +1,24 @@
+147,149d146
+< // ModLoader imports
+< import modloader.ModLoader;
+< 
+205,207d201
+<     // ModLoader variables
+<     public static boolean modLoaderActive;
+<     
+279,286c273,274
+<             }   
+< 
+<             // ModLoader initialization
+<             String jarPath = CardCrawlGame.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+<             jarPath = jarPath.substring(0, jarPath.lastIndexOf("/"));
+<             
+<             ModLoader.initialize(jarPath + "/mods/");
+<         } 
+---
+>             }
+>         }
+321c309
+<         Map<?,?> map = p.get();
+---
+>         Map map = p.get();

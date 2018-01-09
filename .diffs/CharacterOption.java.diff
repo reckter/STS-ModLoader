@@ -1,0 +1,9 @@
+44,46d43
+< // ModLoader imports
+< import modloader.ModLoader;
+< 
+95,98d91
+<         
+<         // ModLoader hook
+<         if (CardCrawlGame.modLoaderActive) ModLoader.charOptionHook(charInfo);
+<         
