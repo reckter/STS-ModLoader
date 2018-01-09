@@ -14,16 +14,28 @@
         "id": "TestSquare",
         "floor": "EXORDIUM",
         "group": "WEAK",
-        "weight": 25.0,
+        "weight": 2.0,
         "monsters": [
             "TestSquare"
         ]
     }, {
         "id": "2 TestSquares",
         "floor": "EXORDIUM",
-        "group": "WEAK",
-        "weight": 25.0,
+        "group": "STRONG",
+        "weight": 2.0,
         "monsters": [
+            "TestSquare",
+            "TestSquare"
+        ]
+    }, {
+        "id": "5 TestSquares",
+        "floor": "EXORDIUM",
+        "group": "BOSS",
+        "weight": 1.0,
+        "monsters": [
+            "TestSquare",
+            "TestSquare",
+            "TestSquare",
             "TestSquare",
             "TestSquare"
         ]

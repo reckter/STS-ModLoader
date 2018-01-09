@@ -141,12 +141,26 @@ public class ModLoader {
 
     // monsterPoolHook - Adds all CustomEncounters for the specified floor and group to the monsters List
     public static void monsterPoolHook(ArrayList<MonsterInfo> monsters, CustomEncounter.Floor floor, CustomEncounter.Group group) {
-        logger.info("monsterPoolHook: " + floor + " " + group);
         for (ModContainer mod : mods) {
             for (CustomEncounter ce : mod.customEncounters) {
                 if (ce.floor == floor && ce.group == group) {
                     monsters.add(new MonsterInfo(ce.id, ce.weight));
-                    logger.info("Added CustomEncounter to " + floor + " " + group + " pool: " + ce.id + "(" + ce.weight + ")");
+                    logger.info("Added CustomEncounter to " + floor + " " + group + " pool: " + ce.id + " (" + ce.weight + ")");
+                }
+            }
+        }
+    }
+    
+    public static void bossPoolHook(ArrayList<String> bosses, CustomEncounter.Floor floor) {
+        for (ModContainer mod : mods) {
+            for (CustomEncounter ce : mod.customEncounters) {
+                if (ce.floor == floor && ce.group == CustomEncounter.Group.BOSS) {
+                    if (Math.abs(ce.weight - 1.0f) < 0.1f) {
+                        bosses.clear();
+                    }
+                    
+                    bosses.add(ce.id);
+                    logger.info("Added CustomEncounter to " + floor + " BOSS pool: " + ce.id);
                 }
             }
         }
@@ -172,7 +186,7 @@ public class ModLoader {
                         return new MonsterGroup(monster);
                     } else {
                         ArrayList<AbstractMonster> monsters = new ArrayList<AbstractMonster>();
-                        float offx = 100.0f;
+                        float offx = 200.0f;
                         for (String mcName : encounter.monsters) {
                             Class monsterClass = Class.forName(mod.modPackage + ".monsters." + mcName); 
                             float hbx = (float) monsterClass.getDeclaredField("HBW").get(null);
@@ -191,7 +205,7 @@ public class ModLoader {
             }
         }
         
-        logger.info("Did not find custom encounter: " + key);
+        logger.info("Did not find CustomEncounter: " + key);
         return null;
     }
     
