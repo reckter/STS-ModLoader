@@ -22,3 +22,12 @@
 <         Map map = p.get();
 ---
 >         Map<?,?> map = p.get();
+512a525,527
+>         // ModLoader hook
+>         if (modLoaderActive) ModLoader.updateHook();
+>         
+584a600,603
+>                         
+>                         // ModLoader hook
+>                         if (modLoaderActive) ModLoader.startGameHook();
+>                         

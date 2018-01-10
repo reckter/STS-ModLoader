@@ -1,33 +1,33 @@
-37a38,41
+32a33,36
 > // ModLoader imports
 > import modloader.CustomEncounter;
 > import modloader.ModLoader;
 > 
-118a123,128
+98a103,108
 >         
 >         // ModLoader hook
 >         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.EXORDIUM, CustomEncounter.Group.WEAK);
+>             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.BEYOND, CustomEncounter.Group.WEAK);
 >         }
 >         
-130a141,146
+109a120,125
 >         
 >         // ModLoader hook
 >         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.EXORDIUM, CustomEncounter.Group.STRONG);
+>             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.BEYOND, CustomEncounter.Group.STRONG);
 >         }
 >         
-137a154,159
+116a133,138
 >         
 >         // ModLoader hook
 >         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.EXORDIUM, CustomEncounter.Group.ELITE);
+>             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.BEYOND, CustomEncounter.Group.ELITE);
 >         }
 >         
-185a208,213
+157a180,185
 >             
 >             // ModLoader hook
 >             if (CardCrawlGame.modLoaderActive) {
->                 ModLoader.bossPoolHook(bossList, CustomEncounter.Floor.EXORDIUM);
+>                 ModLoader.bossPoolHook(bossList, CustomEncounter.Floor.BEYOND);
 >             }
 >         
