@@ -3,16 +3,29 @@
     "modPackage": "examplemod",
     "modDescription": "An example mod.",
     "modAuthor": "t-larson",
-    "modVersion": "0.0.7",
+    "modVersion": "0.0.9",
     "customCardIds": [
         "Test1"
     ],
     "customRelicIds": [
         "TestRelic1"
     ],
+    "customEventIds": [
+        "TestEvent1",
+        "TestShrine1"
+    ],
     "customMonsterIds": [
         "TestSquare"
     ],
+    "customEvents": [{
+        "id": "TestEvent1",
+        "eventType": "EVENT",
+        "floor": "EXORDIUM"
+    }, {
+        "id": "TestShrine1",
+        "eventType": "SHRINE",
+        "floor": "EXORDIUM"
+    }],
     "customEncounters": [{
         "id": "TestSquare",
         "floor": "EXORDIUM",
@@ -44,7 +57,7 @@
         "id": "4 TestSquares",
         "floor": "EXORDIUM",
         "group": "BOSS",
-        "weight": 1.0,
+        "weight": 0.0,
         "monsters": [
             "TestSquare",
             "TestSquare",

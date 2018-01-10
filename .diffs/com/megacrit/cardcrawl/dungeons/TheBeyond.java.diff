@@ -31,3 +31,15 @@
 >                 ModLoader.bossPoolHook(bossList, CustomEncounter.Floor.BEYOND);
 >             }
 >         
+168a197,201
+>         
+>         // ModLoader hook
+>         if (CardCrawlGame.modLoaderActive) {
+>             ModLoader.eventListHook(eventList, CustomEncounter.Floor.BEYOND);
+>         }
+187a221,225
+>         
+>         // ModLoader hook
+>         if (CardCrawlGame.modLoaderActive) {
+>             ModLoader.shrineListHook(shrineList, CustomEncounter.Floor.BEYOND);
+>         }

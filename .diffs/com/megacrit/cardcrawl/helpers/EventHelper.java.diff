@@ -1,0 +1,12 @@
+62a63,66
+> // ModLoader imports
+> import com.megacrit.cardcrawl.core.CardCrawlGame;
+> import modloader.ModLoader;
+> 
+162a167,172
+>         // ModLoader hook
+>         if (CardCrawlGame.modLoaderActive) {
+>             AbstractEvent customEvent = ModLoader.customEventHook(key);
+>             if (customEvent != null) return customEvent;
+>         }
+>         

@@ -1,0 +1,24 @@
+{
+    "TestEvent1": {
+        "NAME": "Test Event 1",
+        "DESCRIPTIONS": [
+            "#rState #r1",
+            "#gState #g2",
+            "#bState #b3",
+            "YOU LEFT"
+        ],
+        "OPTIONS": [
+            "~Go to~ #rstate #r1",
+            "~Go to~ #gstate #g2",
+            "~Go to~ #bstate #b3",
+            "@[Leave]@"
+        ]
+    },
+    "TestShrine1": {
+        "NAME": "Test Shrine 1",
+        "DESCRIPTIONS": [
+        ],
+        "OPTIONS": [
+        ]
+    }
+}

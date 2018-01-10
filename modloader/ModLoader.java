@@ -9,9 +9,11 @@ import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.events.AbstractEvent;
 import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.helpers.CardHelper;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
+import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.localization.LocalizedStrings;
 import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
@@ -54,7 +56,8 @@ public class ModLoader {
     
     // Flags
     private static final boolean isDev = true;
-        
+    private static final boolean isTest = true;
+    
     // initialize -
     public static void initialize(String path) {
         logger.info("========================= MOD LOADER INIT =========================");
@@ -89,9 +92,12 @@ public class ModLoader {
         
         mods = loadMods();  
         
-        generateCustomCards();
         loadCustomRelicStrings();
+        loadCustomEventStrings();
+        
+        generateCustomCards();
         generateCustomRelics();
+        loadCustomEvents();
         loadCustomMonsters();
         
         logger.info("===================================================================");
@@ -161,14 +167,15 @@ public class ModLoader {
         }
     }
     
+    // bossPoolHook -
     public static void bossPoolHook(ArrayList<String> bosses, CustomEncounter.Floor floor) {
+        if (isTest) {
+            bosses.clear();
+        }
+        
         for (ModContainer mod : mods) {
             for (CustomEncounter ce : mod.customEncounters) {
                 if (ce.floor == floor && ce.group == CustomEncounter.Group.BOSS) {
-                    if (Math.abs(ce.weight - 1.0f) < 0.1f) {
-                        bosses.clear();
-                    }
-                    
                     bosses.add(ce.id);
                     logger.info("Added CustomEncounter to " + floor + " BOSS pool: " + ce.id);
                 }
@@ -196,7 +203,7 @@ public class ModLoader {
                         return new MonsterGroup(monster);
                     } else {
                         ArrayList<AbstractMonster> monsters = new ArrayList<AbstractMonster>();
-                        float offx = 200.0f;
+                        float offx = 250.0f;
                         for (String mcName : encounter.monsters) {
                             Class monsterClass = Class.forName(mod.modPackage + ".monsters." + mcName); 
                             float hbx = (float) monsterClass.getDeclaredField("HBW").get(null);
@@ -217,6 +224,65 @@ public class ModLoader {
         
         logger.info("Did not find CustomEncounter: " + key);
         return null;
+    }
+    
+    // customEventHook -
+    public static AbstractEvent customEventHook(String key) {
+        for (ModContainer mod : mods) {
+            CustomEvent customEvent = null;
+            for (CustomEvent ce : mod.customEvents) {
+                if (ce.id.equals(key)) {
+                    customEvent = ce;
+                    break;
+                }
+            }
+            
+            if (customEvent != null) {
+                try {
+                    Class eventClass = Class.forName(mod.modPackage + ".events." + key);
+                    AbstractEvent event = (AbstractEvent) eventClass.newInstance();
+                    logger.info("Created custom event: " + key);
+                    return event;
+                } catch (Exception e) {
+                    logger.error("Exception in customEventHook", e);
+                }
+            }
+        }
+        
+        logger.info("Did not find CustomEvent: " + key);
+        return null;
+    }
+    
+    // eventListHook -
+    public static void eventListHook(ArrayList<String> eventList, CustomEncounter.Floor floor) {
+        if (isTest) {
+            eventList.clear();
+        }
+        
+        for (ModContainer mod : mods) {
+            for (CustomEvent ce : mod.customEvents) {
+                if (ce.eventType == CustomEvent.EventType.EVENT && ce.floor == floor) {
+                    eventList.add(ce.id);
+                    logger.info("Added CustomEvent to " + floor + " EVENT pool: " + ce.id);
+                }
+            }
+        }
+    }
+    
+    // shrineListHook -
+    public static void shrineListHook(ArrayList<String> shrineList, CustomEncounter.Floor floor) {
+        if (isTest) {
+            shrineList.clear();
+        }
+        
+        for (ModContainer mod : mods) {
+            for (CustomEvent ce : mod.customEvents) {
+                if (ce.eventType == CustomEvent.EventType.SHRINE && ce.floor == floor) {
+                    shrineList.add(ce.id);
+                    logger.info("Added CustomEvent to " + floor + " SHRINE pool: " + ce.id);
+                }
+            }
+        }
     }
     
     // initializeGson -
@@ -272,6 +338,44 @@ public class ModLoader {
         return mods;
     }
     
+    // loadCustomRelicStrings -
+    private static void loadCustomRelicStrings() {
+        logger.info("Loading custom RelicStrings");
+        
+        Map<String, RelicStrings> customRelicStrings = new HashMap<String, RelicStrings>();
+        for (ModContainer mod : mods) {
+            String relicPath = modRootPath + mod.modPackage + "/localization/relics.json";
+            Type relicType = new TypeToken<Map<String, RelicStrings>>(){}.getType();
+            customRelicStrings.putAll(gson.fromJson(readFile(relicPath), relicType));
+        }
+        
+        Map<String, RelicStrings> relicStrings = (Map<String, RelicStrings>) getPrivateStatic(LocalizedStrings.class, "relics");
+        relicStrings.putAll(customRelicStrings);
+        setPrivateStaticFinal(LocalizedStrings.class, "relics", relicStrings);
+        
+        logger.info("All custom RelicStrings loaded");
+        logger.info("");
+    }
+    
+    // loadCustomEventStrings -
+    private static void loadCustomEventStrings() {
+        logger.info("Loading custom EventStrings");
+        
+        Map<String, EventStrings> customEventStrings = new HashMap<String, EventStrings>();
+        for (ModContainer mod : mods) {
+            String eventPath = modRootPath + mod.modPackage + "/localization/relics.json";
+            Type eventType = new TypeToken<Map<String, EventStrings>>(){}.getType();
+            customEventStrings.putAll(gson.fromJson(readFile(eventPath), eventType));
+        }
+        
+        Map<String, EventStrings> eventStrings = (Map<String, EventStrings>) getPrivateStatic(LocalizedStrings.class, "events");
+        eventStrings.putAll(customEventStrings);
+        setPrivateStaticFinal(LocalizedStrings.class, "events", eventStrings);
+        
+        logger.info("All custom EventStrings loaded");
+        logger.info("");
+    }
+    
     // generateCustomCards -
     private static void generateCustomCards() {
         logger.info("Generating custom cards");
@@ -302,25 +406,6 @@ public class ModLoader {
         logger.info("");
     }
     
-    // loadCustomRelicStrings -
-    private static void loadCustomRelicStrings() {
-        logger.info("Loading custom RelicStrings");
-        
-        Map<String, RelicStrings> customRelicStringsMap = new HashMap<String, RelicStrings>();
-        for (ModContainer mod : mods) {
-            String relicPath = modRootPath + mod.modPackage + "/localization/relics.json";
-            Type relicType = new TypeToken<Map<String, RelicStrings>>(){}.getType();
-            customRelicStringsMap.putAll(gson.fromJson(readFile(relicPath), relicType));
-        }
-        
-        Map<String, RelicStrings> relicStrings = (Map<String, RelicStrings>) getPrivateStatic(LocalizedStrings.class, "relics");
-        relicStrings.putAll(customRelicStringsMap);
-        setPrivateStaticFinal(LocalizedStrings.class, "relics", relicStrings);
-        
-        logger.info("All custom RelicStrings loaded");
-        logger.info("");
-    }
-    
     // generateCustomRelics -
     private static void generateCustomRelics() {
         logger.info("Generating custom relics");
@@ -346,6 +431,26 @@ public class ModLoader {
         }
         
         logger.info("All custom relics generated");
+        logger.info("");
+    }
+    
+    // loadCustomEvents -
+    private static void loadCustomEvents() {
+        logger.info("Loading custom events");
+        
+        for (ModContainer mod : mods) {
+            for (String id : mod.customEventIds) {
+                try {
+                    Class customEventClass = loader.loadClass(mod.modPackage + ".events." + id);
+                } catch (Exception e) {
+                    logger.error(mod.modName + ": Exception occured when loading event " + id, e);
+                }
+                
+                logger.info(mod.modName + ": " + id + " loaded");
+            }
+        }
+        
+        logger.info("All custom events loaded");
         logger.info("");
     }
     

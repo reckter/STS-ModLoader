@@ -16,12 +16,15 @@ public class ModContainer {
     
     public List<String> customCardIds;
     public List<String> customRelicIds;
+    public List<String> customEventIds;
     public List<String> customMonsterIds;
+    public ArrayList<CustomEvent> customEvents;
     public List<CustomEncounter> customEncounters;
     
     // Manually populated
     public ArrayList<Object> customCards; // Things break if this is an ArrayList<AbstractCard> - no idea why
     public ArrayList<AbstractRelic> customRelics;
+    
     public HashMap<String, Class> customMonsters;
     public HashMap<String, CharacterMod> characterMods;
     
@@ -29,6 +32,7 @@ public class ModContainer {
         customCardIds = new ArrayList<String>();
         customRelicIds = new ArrayList<String>();
         customMonsterIds = new ArrayList<String>();
+        customEvents = new ArrayList<CustomEvent>();
         customEncounters = new ArrayList<CustomEncounter>();
         
         customCards = new ArrayList<Object>();
