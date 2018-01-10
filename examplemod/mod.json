@@ -1,11 +1,14 @@
 {
     "modName": "Example Mod",
     "modPackage": "examplemod",
-    "modDescription": "An example mod",
-    "modAuthor": "Example",
-    "modVersion": "0.0.5",
+    "modDescription": "An example mod.",
+    "modAuthor": "t-larson",
+    "modVersion": "0.0.7",
     "customCardIds": [
         "Test1"
+    ],
+    "customRelicIds": [
+        "TestRelic1"
     ],
     "customMonsterIds": [
         "TestSquare"
@@ -14,7 +17,7 @@
         "id": "TestSquare",
         "floor": "EXORDIUM",
         "group": "WEAK",
-        "weight": 2.0,
+        "weight": 1.0,
         "monsters": [
             "TestSquare"
         ]
@@ -22,18 +25,27 @@
         "id": "2 TestSquares",
         "floor": "EXORDIUM",
         "group": "STRONG",
-        "weight": 2.0,
+        "weight": 1.0,
         "monsters": [
             "TestSquare",
             "TestSquare"
         ]
     }, {
-        "id": "5 TestSquares",
+        "id": "3 TestSquares",
+        "floor": "EXORDIUM",
+        "group": "ELITE",
+        "weight": 1.0,
+        "monsters": [
+            "TestSquare",
+            "TestSquare",
+            "TestSquare"
+        ]
+    }, {
+        "id": "4 TestSquares",
         "floor": "EXORDIUM",
         "group": "BOSS",
         "weight": 1.0,
         "monsters": [
-            "TestSquare",
             "TestSquare",
             "TestSquare",
             "TestSquare",

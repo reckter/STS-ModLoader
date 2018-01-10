@@ -3,6 +3,7 @@ package modloader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
@@ -11,9 +12,12 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.helpers.CardHelper;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
+import com.megacrit.cardcrawl.localization.LocalizedStrings;
+import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.monsters.MonsterGroup;
 import com.megacrit.cardcrawl.monsters.MonsterInfo;
+import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.screens.CharSelectInfo;
 import com.megacrit.cardcrawl.screens.mainMenu.CardLibraryScreen;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
@@ -24,18 +28,24 @@ import org.apache.logging.log4j.LogManager;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ModLoader {
     private static final Logger logger = LogManager.getLogger(ModLoader.class.getName());
       
     public static String modRootPath;
     private static ClassLoader loader;
+    private static Gson gson;
     
     private static ArrayList<ModContainer> mods;
     
@@ -44,12 +54,7 @@ public class ModLoader {
     
     // Flags
     private static final boolean isDev = true;
-    
-    // initialize - Reinitializes with the existing root path
-    public static void initialize() {
-        initialize(modRootPath);
-    }
-    
+        
     // initialize -
     public static void initialize(String path) {
         logger.info("========================= MOD LOADER INIT =========================");
@@ -80,8 +85,13 @@ public class ModLoader {
         specialHealth.put("Pear", 10);
         specialHealth.put("Mango", 14);
 
-        mods = loadMods();       
+        initializeGson();
+        
+        mods = loadMods();  
+        
         generateCustomCards();
+        loadCustomRelicStrings();
+        generateCustomRelics();
         loadCustomMonsters();
         
         logger.info("===================================================================");
@@ -209,6 +219,12 @@ public class ModLoader {
         return null;
     }
     
+    // initializeGson -
+    private static void initializeGson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gson = gsonBuilder.create();
+    }
+            
     // loadMods -
     private static ArrayList<ModContainer> loadMods() {
         ArrayList<ModContainer> mods = new ArrayList<ModContainer>();   
@@ -221,10 +237,6 @@ public class ModLoader {
             String modPath = modRootPath + modPackage;
             
             if (modPackage.equals("modloader") || modPackage.charAt(0) == '.') continue;
-            
-            // Initialize GSON
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            Gson gson = gsonBuilder.create();
             
             // Read and parse JSON
             String modJson = readFile(modPath + "/mod.json");
@@ -290,6 +302,53 @@ public class ModLoader {
         logger.info("");
     }
     
+    // loadCustomRelicStrings -
+    private static void loadCustomRelicStrings() {
+        logger.info("Loading custom RelicStrings");
+        
+        Map<String, RelicStrings> customRelicStringsMap = new HashMap<String, RelicStrings>();
+        for (ModContainer mod : mods) {
+            String relicPath = modRootPath + mod.modPackage + "/localization/relics.json";
+            Type relicType = new TypeToken<Map<String, RelicStrings>>(){}.getType();
+            customRelicStringsMap.putAll(gson.fromJson(readFile(relicPath), relicType));
+        }
+        
+        Map<String, RelicStrings> relicStrings = (Map<String, RelicStrings>) getPrivateStatic(LocalizedStrings.class, "relics");
+        relicStrings.putAll(customRelicStringsMap);
+        setPrivateStaticFinal(LocalizedStrings.class, "relics", relicStrings);
+        
+        logger.info("All custom RelicStrings loaded");
+        logger.info("");
+    }
+    
+    // generateCustomRelics -
+    private static void generateCustomRelics() {
+        logger.info("Generating custom relics");
+        
+        for (ModContainer mod : mods) {
+            for (String id : mod.customRelicIds) {
+                AbstractRelic customRelic = null;
+                
+                try {
+                    customRelic = (AbstractRelic) loader.loadClass(mod.modPackage + ".relics." + id).newInstance();
+                    mod.customRelics.add(customRelic);
+                } catch (Exception e) {
+                    logger.error(mod.modName + ": Exception occured when generating relic " + id, e);
+                }
+                
+                if (customRelic != null) {
+                    RelicLibrary.add(customRelic);
+                    logger.info(mod.modName + ": " + id + " generated");
+                } else {
+                    logger.error(mod.modName + ": " + id + " could not be generated, skipping");
+                }
+            }
+        }
+        
+        logger.info("All custom relics generated");
+        logger.info("");
+    }
+    
     // loadCustomMonsters -
     private static void loadCustomMonsters() {
         logger.info("Loading custom monsters");
@@ -298,7 +357,7 @@ public class ModLoader {
             for (String id : mod.customMonsterIds) {
                 try {
                     Class customMonsterClass = loader.loadClass(mod.modPackage + ".monsters." + id);
-                    mod.customMonsters.put(id, customMonsterClass);
+                    mod.customMonsters.put(id, customMonsterClass); 
                 } catch (Exception e) {
                     logger.error(mod.modName + ": Exception occured when loading monster " + id, e);
                 }
@@ -367,27 +426,9 @@ public class ModLoader {
         }            
     }
     
-    // readFile - Helper function that returns a String representation of the contents of the file located at path
-    // returns null if the file can not be accessed/found or is a folder
+    // readFile - Shorthand for gdx readString
     private static String readFile(String path) {
-        File f = new File(path);
-        if (!f.exists() || f.isDirectory()) return null;
-        
-        String fileString = null;
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            StringBuilder sb = new StringBuilder();
-            String line = br.readLine();       
-            while (line != null) {
-                sb.append(line.trim());
-                line = br.readLine();
-            }
-            
-            fileString = sb.toString();
-        } catch (Exception e) {
-            logger.error("Exception while reading " + path + "", e);
-        }
-        
-        return fileString;
+        return Gdx.files.absolute(path).readString(String.valueOf(StandardCharsets.UTF_8));
     }
     
     // hijackClassLoader - Hijack the system ClassLoader for our use so we can cast properly
@@ -403,6 +444,34 @@ public class ModLoader {
             addUrl.invoke(loader, new Object[]{modRoot.toURI().toURL()});
         } catch (Exception e) {
             logger.error("Exception occured while hijacking system ClassLoader: ", e);
+        }
+    }
+    
+    // getPrivate - Hack to let us read private static fields when needed
+    public static Object getPrivateStatic(Class objClass, String fieldName) {
+        try {
+            Field targetField = objClass.getDeclaredField(fieldName);
+            targetField.setAccessible(true);
+            return targetField.get(null);
+        } catch (Exception e) {
+            logger.error("Exception occured when getting private static field " + fieldName + " of " + objClass.getName(), e);
+        }
+        
+        return null;
+    }
+    
+    // setFinalStatic - Hack to let us modify (private) static (final) fields when needed
+    public static void setPrivateStaticFinal(Class objClass, String fieldName, Object newValue) {
+        try {
+            Field targetField = objClass.getDeclaredField(fieldName);
+            Field modifiersField = Field.class.getDeclaredField("modifiers");
+            modifiersField.setAccessible(true);
+            modifiersField.setInt(targetField, targetField.getModifiers() & ~Modifier.FINAL);
+
+            targetField.setAccessible(true);
+            targetField.set(null, newValue);
+        } catch (Exception e) {
+            logger.error("Exception occured when setting (private) static (final) field " + fieldName + " of " + objClass.getName(), e);
         }
     }
 }

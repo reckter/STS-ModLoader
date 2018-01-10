@@ -7,6 +7,8 @@
     "removeCards": [
     ],
     "addRelics": [
+        "TestRelic1",
+        "Test Relic 1"
     ],
     "removeRelics": [
     ]
