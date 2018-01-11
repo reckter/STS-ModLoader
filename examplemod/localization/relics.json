@@ -1,6 +1,6 @@
 {
     "TestRelic1": {
-        "NAME": "Test Relic 1",
+        "NAME": "Test Relic",
         "FLAVOR": "yum",
         "DESCRIPTIONS": [
             "What a useless relic"

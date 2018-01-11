@@ -56,7 +56,7 @@ public class ModLoader {
     
     // Flags
     private static final boolean isDev = true;
-    private static final boolean isTest = true;
+    private static final boolean isTest = false;
     
     // initialize -
     public static void initialize(String path) {
@@ -105,7 +105,21 @@ public class ModLoader {
     
     // updateHook -
     public static void updateHook() {
-
+        if (Gdx.input.isKeyJustPressed(Keys.F5)) {
+            if (AbstractDungeon.eventList != null) {
+                for (String event : AbstractDungeon.eventList) {
+                    logger.info(event);
+                }
+            }
+        }  
+        
+        if (Gdx.input.isKeyJustPressed(Keys.F6)) {
+            if (AbstractDungeon.shrineList != null) {
+                for (String shrine : AbstractDungeon.shrineList) {
+                    logger.info(shrine);
+                }
+            }
+        }      
     }
     
     // startGameHook -
@@ -363,7 +377,7 @@ public class ModLoader {
         
         Map<String, EventStrings> customEventStrings = new HashMap<String, EventStrings>();
         for (ModContainer mod : mods) {
-            String eventPath = modRootPath + mod.modPackage + "/localization/relics.json";
+            String eventPath = modRootPath + mod.modPackage + "/localization/events.json";
             Type eventType = new TypeToken<Map<String, EventStrings>>(){}.getType();
             customEventStrings.putAll(gson.fromJson(readFile(eventPath), eventType));
         }

@@ -1,24 +1,32 @@
 {
     "TestEvent1": {
-        "NAME": "Test Event 1",
+        "NAME": "Test Event",
         "DESCRIPTIONS": [
-            "#rState #r1",
-            "#gState #g2",
+            "#r~State~ #r1",
+            "#g@State@ #g2",
             "#bState #b3",
-            "YOU LEFT"
+            "#pYOU #pLEFT"
         ],
         "OPTIONS": [
-            "~Go to~ #rstate #r1",
-            "~Go to~ #gstate #g2",
-            "~Go to~ #bstate #b3",
-            "@[Leave]@"
+            "#y[State #y1] Get a Test Relic",
+            "#y[State #y2]",
+            "#y[State #y3]",
+            "#y[Leave]"
         ]
     },
     "TestShrine1": {
-        "NAME": "Test Shrine 1",
+        "NAME": "Test Shrine",
         "DESCRIPTIONS": [
+            "#r~State~ #r1",
+            "#g@State@ #g2",
+            "#bState #b3",
+            "#pYOU #pLEFT"
         ],
         "OPTIONS": [
+            "#y[State #y1] Get a Test Relic",
+            "#y[State #y2]",
+            "#y[State #y3]",
+            "#y[Leave]"
         ]
     }
 }
