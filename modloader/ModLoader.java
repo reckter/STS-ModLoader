@@ -593,4 +593,15 @@ public class ModLoader {
             logger.error("Exception occured when setting (private) static (final) field " + fieldName + " of " + objClass.getName(), e);
         }
     }
+    
+    // setPrivateInherited - Hack to let us modify private inherited fields when needed
+    public static void setPrivateInherited(Object obj, Class objClass, String fieldName, Object newValue) {
+        try {
+            Field targetField = objClass.getSuperclass().getDeclaredField(fieldName);
+            targetField.setAccessible(true);
+            targetField.set(obj, newValue);
+        } catch (Exception e) {
+            logger.error("Exception occured when setting private inherited field " + fieldName + " of " + objClass.getName(), e);
+        }
+    }
 }
