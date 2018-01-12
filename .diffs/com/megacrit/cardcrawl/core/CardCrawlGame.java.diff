@@ -6,7 +6,7 @@
 >     // ModLoader variables
 >     public static boolean modLoaderActive;
 >     
-273,274c279,286
+274,275c280,287
 <             }
 <         }
 ---
@@ -18,15 +18,15 @@
 >             
 >             ModLoader.initialize(jarPath + "/mods/");
 >         } 
-309c321
+325c337
 <         Map map = p.get();
 ---
 >         Map<?,?> map = p.get();
-512a525,527
+528a541,543
 >         // ModLoader hook
 >         if (modLoaderActive) ModLoader.updateHook();
 >         
-584a600,603
+600a616,619
 >                         
 >                         // ModLoader hook
 >                         if (modLoaderActive) ModLoader.startGameHook();

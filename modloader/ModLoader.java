@@ -61,8 +61,8 @@ public class ModLoader {
     private static String[] specialEnergy = {"Philosopher's Stone", "Velvet Choker", "Sozu", "Gremlin Horn", "Cursed Key", "Lantern"};   
     
     // Flags
-    private static final boolean isDev = true;
-    private static final boolean isTest = true;
+    private static final boolean isDev = false;
+    private static final boolean isTest = false;
     
     // initialize -
     public static void initialize(String path) {
