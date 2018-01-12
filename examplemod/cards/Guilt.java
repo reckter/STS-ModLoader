@@ -46,11 +46,6 @@ public class Guilt extends CustomCard {
     }
     
     @Override
-    public void triggerOnEndOfPlayerTurn() {
-        
-    }
-    
-    @Override
     public AbstractCard makeCopy() {
         return new Guilt();
     }

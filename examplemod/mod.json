@@ -5,7 +5,9 @@
     "modAuthor": "t-larson",
     "modVersion": "0.0.9",
     "customCardIds": [
-        "Test1"
+        "Test1",
+        "Guilt",
+        "Contamination"
     ],
     "customRelicIds": [
         "TestRelic1"

@@ -2,6 +2,7 @@ package modloader;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -12,6 +13,8 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.events.AbstractEvent;
 import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.helpers.CardHelper;
+import com.megacrit.cardcrawl.helpers.FontHelper;
+import com.megacrit.cardcrawl.helpers.GameDictionary;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
 import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.localization.LocalizedStrings;
@@ -41,6 +44,7 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class ModLoader {
     private static final Logger logger = LogManager.getLogger(ModLoader.class.getName());
@@ -88,12 +92,15 @@ public class ModLoader {
         specialHealth.put("Pear", 10);
         specialHealth.put("Mango", 14);
 
+        //setFontSize(22.0f);
+        
         initializeGson();
         
         mods = loadMods();  
         
         loadCustomRelicStrings();
         loadCustomEventStrings();
+        loadCustomKeywords();
         
         generateCustomCards();
         generateCustomRelics();
@@ -299,6 +306,18 @@ public class ModLoader {
         }
     }
     
+    // setFontSize -
+    private static void setFontSize(float size) {
+        try {
+            Method prepFont = FontHelper.class.getDeclaredMethod("prepFont", new Class[]{float.class, boolean.class});
+            prepFont.setAccessible(true);
+             FontHelper.cardDescFont_N = (BitmapFont) prepFont.invoke(null, size, false);
+             FontHelper.cardDescFont_L = (BitmapFont) prepFont.invoke(null, size, true);
+        } catch (Exception e) {
+            logger.error("Exception while setting font size", e);
+        }
+    }
+    
     // initializeGson -
     private static void initializeGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -387,6 +406,23 @@ public class ModLoader {
         setPrivateStaticFinal(LocalizedStrings.class, "events", eventStrings);
         
         logger.info("All custom EventStrings loaded");
+        logger.info("");
+    }
+    
+    // loadCustomKeywords -
+    private static void loadCustomKeywords() {
+        logger.info("Loading custom keywords");
+
+        TreeMap<String, String> customKeywords = new TreeMap<String, String>();
+        for (ModContainer mod : mods) {
+            String keywordPath = modRootPath + mod.modPackage + "/localization/keywords.json";
+            Type keywordType = new TypeToken<Map<String, String>>(){}.getType();
+            customKeywords.putAll(gson.fromJson(readFile(keywordPath), keywordType));
+        }
+
+        GameDictionary.keywords.putAll(customKeywords);
+        
+        logger.info("All custom keywords loaded");
         logger.info("");
     }
     
