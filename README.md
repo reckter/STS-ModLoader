@@ -1,7 +1,7 @@
 # STS ModLoader #
-Patch version: `[EARLY_ACCESS_011] (01-11-2018) BETA`
+Patch version: `[EARLY_ACCESS_011] (01-11-2018) BETA #1`
 
-Source version: `[EARLY_ACCESS_011] (01-11-2018) BETA`
+Source version: `[EARLY_ACCESS_011] (01-11-2018) BETA #1`
 
 ## Requirements ##
 Java 8+
