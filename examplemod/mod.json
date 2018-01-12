@@ -3,32 +3,28 @@
     "modPackage": "examplemod",
     "modDescription": "An example mod.",
     "modAuthor": "t-larson",
-    "modVersion": "0.0.9",
+    "modVersion": "0.1.0",
     "customCardIds": [
         "Test1",
         "Guilt",
         "Contamination"
     ],
     "customRelicIds": [
-        "TestRelic1",
-        "SmallCrystalChunk"
+        "SmallCrystalChunk",
+        "MageBlessingDex",
+        "MageBlessingStr"
     ],
     "customEventIds": [
-        "TestEvent1",
-        "TestShrine1"
+        "InjuredMage"
     ],
+    "customEvents": [{
+        "id": "InjuredMage",
+        "eventType": "EVENT",
+        "floor": "EXORDIUM"
+    }],
     "customMonsterIds": [
         "TestSquare"
     ],
-    "customEvents": [{
-        "id": "TestEvent1",
-        "eventType": "EVENT",
-        "floor": "EXORDIUM"
-    }, {
-        "id": "TestShrine1",
-        "eventType": "SHRINE",
-        "floor": "EXORDIUM"
-    }],
     "customEncounters": [{
         "id": "TestSquare",
         "floor": "EXORDIUM",

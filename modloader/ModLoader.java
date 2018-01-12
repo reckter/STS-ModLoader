@@ -15,6 +15,7 @@ import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.helpers.CardHelper;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.helpers.GameDictionary;
+import com.megacrit.cardcrawl.helpers.PotionHelper;
 import com.megacrit.cardcrawl.helpers.RelicLibrary;
 import com.megacrit.cardcrawl.localization.EventStrings;
 import com.megacrit.cardcrawl.localization.LocalizedStrings;
@@ -22,6 +23,7 @@ import com.megacrit.cardcrawl.localization.RelicStrings;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.monsters.MonsterGroup;
 import com.megacrit.cardcrawl.monsters.MonsterInfo;
+import com.megacrit.cardcrawl.potions.AbstractPotion;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
 import com.megacrit.cardcrawl.screens.CharSelectInfo;
 import com.megacrit.cardcrawl.screens.mainMenu.CardLibraryScreen;
@@ -60,7 +62,7 @@ public class ModLoader {
     
     // Flags
     private static final boolean isDev = true;
-    private static final boolean isTest = false;
+    private static final boolean isTest = true;
     
     // initialize -
     public static void initialize(String path) {
@@ -110,8 +112,9 @@ public class ModLoader {
         logger.info("===================================================================");
     }
     
-    // updateHook -
+    // updateHook - Hotkeys
     public static void updateHook() {
+        // Check current event list
         if (Gdx.input.isKeyJustPressed(Keys.F5)) {
             if (AbstractDungeon.eventList != null) {
                 for (String event : AbstractDungeon.eventList) {
@@ -120,13 +123,23 @@ public class ModLoader {
             }
         }  
         
+        // Check current shrine list
         if (Gdx.input.isKeyJustPressed(Keys.F6)) {
             if (AbstractDungeon.shrineList != null) {
                 for (String shrine : AbstractDungeon.shrineList) {
                     logger.info(shrine);
                 }
             }
-        }      
+        }  
+        
+        // Generate 3 random potions
+        if (Gdx.input.isKeyJustPressed(Keys.F7)) {
+            for (int i = 0; i < 3; i++) {
+                AbstractPotion p = PotionHelper.getRandomPotion();
+                p.moveInstantly(AbstractDungeon.player.potions[i].currentX, AbstractDungeon.player.potions[i].currentY);
+                AbstractDungeon.player.potions[i] = p;
+            }
+        }          
     }
     
     // startGameHook -

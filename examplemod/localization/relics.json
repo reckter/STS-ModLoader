@@ -13,5 +13,21 @@
             "At the end of your turn gain #b",
             " #yBlock."
         ]
+    },
+    "MageBlessingDex": {
+        "NAME": "Mage's Blessing",
+        "FLAVOR": "You feel light on your feet.",
+        "DESCRIPTIONS": [
+           "At the start of each combat, gain #b", 
+            " #yDexterity."
+        ]
+    },
+    "MageBlessingStr": {
+        "NAME": "Mage's Blessing",
+        "FLAVOR": "You feel powerful.",
+        "DESCRIPTIONS": [
+           "At the start of each combat, gain #b", 
+            " #yStrength."
+        ]
     }
 }

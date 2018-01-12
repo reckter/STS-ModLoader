@@ -2,6 +2,7 @@ package examplemod.cards;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.DamageAction;
+import com.megacrit.cardcrawl.actions.common.DamageAllEnemiesAction;
 import com.megacrit.cardcrawl.actions.common.DrawCardAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
@@ -15,8 +16,8 @@ public class Test1 extends AbstractCard {
     public static final String NAME = "Test Card";
     public static final String IMAGE = "status/beta";
     public static final int COST = 0;
-    public static final String DESCRIPTION = "Draw !M! card. NL Exhaust";
-    public static final String UPGRADED_DESCRIPTION = "Draw !M! cards. NL Exhaust";
+    public static final String DESCRIPTION = "DEBUG";
+    public static final String UPGRADED_DESCRIPTION = "DEBUG";
     public static final AbstractCard.CardType TYPE = AbstractCard.CardType.SKILL;
     public static final AbstractCard.CardColor COLOR = AbstractCard.CardColor.RED;
     public static final AbstractCard.CardRarity RARITY = AbstractCard.CardRarity.BASIC;
@@ -36,7 +37,11 @@ public class Test1 extends AbstractCard {
     }
     
     public void use(final AbstractPlayer p, final AbstractMonster m) {
-        AbstractDungeon.actionManager.addToBottom((AbstractGameAction)new DrawCardAction((AbstractCreature)p, this.magicNumber));
+        multiDamage = new int[AbstractDungeon.getCurrRoom().monsters.monsters.size()];
+        for (int i = 0; i < AbstractDungeon.getCurrRoom().monsters.monsters.size(); ++i) {
+            this.multiDamage[i] = 250;
+        }
+        AbstractDungeon.actionManager.addToBottom(new DamageAllEnemiesAction(p, multiDamage, damageTypeForTurn, AbstractGameAction.AttackEffect.SLASH_DIAGONAL));
     }
     
     public AbstractCard makeCopy() {
