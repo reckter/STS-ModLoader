@@ -10,7 +10,8 @@
         "Contamination"
     ],
     "customRelicIds": [
-        "TestRelic1"
+        "TestRelic1",
+        "SmallCrystalChunk"
     ],
     "customEventIds": [
         "TestEvent1",

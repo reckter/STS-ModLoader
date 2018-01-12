@@ -6,11 +6,12 @@
             "What a useless relic"
         ]
     },
-    "MagicCrystalChunk": {
-        "NAME": "Magic Crystal Chunk",
+    "SmallCrystalChunk": {
+        "NAME": "Small Crystal Chunk",
         "FLAVOR": "A magical power eminates from this crystal. You feel protected carrying it.",
         "DESCRIPTIONS": [
-            "At the end of your turn gain #b2 #yBlock."
+            "At the end of your turn gain #b",
+            " #yBlock."
         ]
     }
 }

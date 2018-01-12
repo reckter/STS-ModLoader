@@ -7,7 +7,9 @@
     "removeCards": [
     ],
     "addRelics": [
-        "TestRelic1"
+        "Orichalcum",
+        "SmallCrystalChunk",
+        "Orichalcum"
     ],
     "removeRelics": [
     ]
