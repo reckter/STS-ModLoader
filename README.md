@@ -14,6 +14,7 @@ Java 8+
 3. Run with "java -jar desktop-1.0.jar" to get logger output
 
 ## Mod Package Structure ##
+```
 mods
 |
 +-- modpackage
@@ -55,9 +56,11 @@ mods
 +-- modpackage2
 |   ...
 \
+```
     
 ## JSON Structure ##
 #### mod.json ####
+Weight should be 0.0 on boss encounters, can be any float on other encounters
 ```json
 {
     "modName": "",
@@ -97,7 +100,6 @@ mods
     }]
 }
 ```
-Weight should be 0.0 on boss encounters, can be any float on other encounters
 
 #### ironclad.json & silent.json ####
 ```json
