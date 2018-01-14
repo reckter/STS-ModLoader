@@ -1,0 +1,19 @@
+{
+    "modName": "Basic Mod",
+    "modPackage": "basicmod",
+    "modDescription": "A very basic mod.",
+    "modAuthor": "t-larson",
+    "modVersion": "1.0",
+    "customCardIds": [
+    ],
+    "customRelicIds": [
+    ],
+    "customEventIds": [
+    ],
+    "customEvents": [
+    ],
+    "customMonsterIds": [
+    ],
+    "customEncounters": [
+    ]
+}

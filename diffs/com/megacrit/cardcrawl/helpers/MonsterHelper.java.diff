@@ -1,9 +1,9 @@
-83a84,87
+78a79,82
 > // ModLoader imports
 > import modloader.ModLoader;
 > import com.megacrit.cardcrawl.core.CardCrawlGame;
 > 
-150a155,160
+145a150,155
 >         // ModLoader hook
 >         if (CardCrawlGame.modLoaderActive) {
 >             MonsterGroup customGroup = ModLoader.customEncounterHook(key);

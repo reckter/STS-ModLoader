@@ -114,32 +114,34 @@ public class ModLoader {
     
     // updateHook - Hotkeys
     public static void updateHook() {
-        // Check current event list
-        if (Gdx.input.isKeyJustPressed(Keys.F5)) {
-            if (AbstractDungeon.eventList != null) {
-                for (String event : AbstractDungeon.eventList) {
-                    logger.info(event);
+        if (isTest) {
+            // Check current event list
+            if (Gdx.input.isKeyJustPressed(Keys.F5)) {
+                if (AbstractDungeon.eventList != null) {
+                    for (String event : AbstractDungeon.eventList) {
+                        logger.info(event);
+                    }
                 }
-            }
-        }  
-        
-        // Check current shrine list
-        if (Gdx.input.isKeyJustPressed(Keys.F6)) {
-            if (AbstractDungeon.shrineList != null) {
-                for (String shrine : AbstractDungeon.shrineList) {
-                    logger.info(shrine);
+            }  
+            
+            // Check current shrine list
+            if (Gdx.input.isKeyJustPressed(Keys.F6)) {
+                if (AbstractDungeon.shrineList != null) {
+                    for (String shrine : AbstractDungeon.shrineList) {
+                        logger.info(shrine);
+                    }
                 }
-            }
-        }  
-        
-        // Generate 3 random potions
-        if (Gdx.input.isKeyJustPressed(Keys.F7)) {
-            for (int i = 0; i < 3; i++) {
-                AbstractPotion p = PotionHelper.getRandomPotion();
-                p.moveInstantly(AbstractDungeon.player.potions[i].currentX, AbstractDungeon.player.potions[i].currentY);
-                AbstractDungeon.player.potions[i] = p;
-            }
-        }          
+            }  
+            
+            // Generate 3 random potions - this works but the graphics mess up
+            if (Gdx.input.isKeyJustPressed(Keys.F7)) {
+                for (int i = 0; i < 3; i++) {
+                    AbstractPotion p = PotionHelper.getRandomPotion();
+                    p.moveInstantly(AbstractDungeon.player.potions[i].currentX, AbstractDungeon.player.potions[i].currentY);
+                    AbstractDungeon.player.potions[i] = p;
+                }
+            } 
+        }            
     }
     
     // startGameHook -
@@ -633,6 +635,7 @@ public class ModLoader {
         try {
             Field targetField = objClass.getDeclaredField(fieldName);
             Field modifiersField = Field.class.getDeclaredField("modifiers");
+            
             modifiersField.setAccessible(true);
             modifiersField.setInt(targetField, targetField.getModifiers() & ~Modifier.FINAL);
 

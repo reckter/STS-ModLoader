@@ -1,45 +1,45 @@
-32a33,36
+29a30,33
 > // ModLoader imports
 > import modloader.CustomEncounter;
 > import modloader.ModLoader;
 > 
-98a103,108
+97a102,107
 >         
 >         // ModLoader hook
 >         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.BEYOND, CustomEncounter.Group.WEAK);
+>             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.CITY, CustomEncounter.Group.WEAK);
 >         }
 >         
-109a120,125
+106a117,122
 >         
 >         // ModLoader hook
 >         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.BEYOND, CustomEncounter.Group.STRONG);
+>             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.CITY, CustomEncounter.Group.STRONG);
 >         }
->         
-116a133,138
+>          
+113a130,135
 >         
 >         // ModLoader hook
 >         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.BEYOND, CustomEncounter.Group.ELITE);
+>             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.CITY, CustomEncounter.Group.ELITE);
 >         }
 >         
-157a180,185
+154a177,182
 >             
 >             // ModLoader hook
 >             if (CardCrawlGame.modLoaderActive) {
->                 ModLoader.bossPoolHook(bossList, CustomEncounter.Floor.BEYOND);
+>                 ModLoader.bossPoolHook(bossList, CustomEncounter.Floor.CITY);
 >             }
 >         
-168a197,201
+172a201,205
 >         
 >         // ModLoader hook
 >         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.eventListHook(eventList, CustomEncounter.Floor.BEYOND);
+>             ModLoader.eventListHook(eventList, CustomEncounter.Floor.CITY);
 >         }
-187a221,225
+191a225,229
 >         
 >         // ModLoader hook
 >         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.shrineListHook(shrineList, CustomEncounter.Floor.BEYOND);
+>             ModLoader.shrineListHook(shrineList, CustomEncounter.Floor.CITY);
 >         }

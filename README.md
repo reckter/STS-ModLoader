@@ -5,13 +5,22 @@ Source version: `[EARLY_ACCESS_011] (01-11-2018)`
 
 ## Requirements ##
 Java 8+
+Python 3.6+ (only for decompiler script)
 
 ## Install instructions: ##
 1. Clone repo
 2. Make a copy of desktop-1.0.jar from your Slay the Spire Steam folder and do one of the following: (MAKE SURE THE VERSION MATCHES PATCH VERSION ABOVE)
   * Apply the JDF patch to it with JojoDiff (http://jojodiff.sourceforge.net/)
-  * Extact the classes there are diff files for, decompile (CFR 124), apply diffs, recompile, put back in the JAR
-3. Run with "java -jar desktop-1.0.jar" to get logger output
+  * Extact the classes there are diff files for, decompile, apply diffs, recompile, put back in the JAR
+3. Run with _run.bat to get logger output
+
+## Decompiler Instructions: ##
+1. Get cfr_0_124.jar and put it in the tools folder (http://www.benf.org/other/cfr/)
+2. Create a folder named 'compiled' in the root and copy the contents of desktop-1.0.jar/com/megacrit/cardcrawl into it (there should be 29 folders)
+3. Run _decompile.bat, this will take a few minutes. A decompiled folder should be created.
+
+## Compiler Instructions: ##
+1. Drag and drop a .java file onto _compile.bat
 
 ## Mod Package Structure ##
 ```

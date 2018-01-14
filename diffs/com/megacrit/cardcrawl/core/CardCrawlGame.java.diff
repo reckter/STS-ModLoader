@@ -1,12 +1,12 @@
-146a147,149
+115a116,118
 > // ModLoader imports
 > import modloader.ModLoader;
 > 
-201a205,207
+170a174,176
 >     // ModLoader variables
 >     public static boolean modLoaderActive;
 >     
-274,275c280,287
+243,244c249,256
 <             }
 <         }
 ---
@@ -18,15 +18,15 @@
 >             
 >             ModLoader.initialize(jarPath + "/mods/");
 >         } 
-325c337
+294c306
 <         Map map = p.get();
 ---
 >         Map<?,?> map = p.get();
-528a541,543
+497a510,512
 >         // ModLoader hook
 >         if (modLoaderActive) ModLoader.updateHook();
 >         
-600a616,619
+569a585,588
 >                         
 >                         // ModLoader hook
 >                         if (modLoaderActive) ModLoader.startGameHook();

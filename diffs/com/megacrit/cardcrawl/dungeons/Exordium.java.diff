@@ -1,45 +1,45 @@
-35a36,39
+33a34,37
 > // ModLoader imports
 > import modloader.CustomEncounter;
 > import modloader.ModLoader;
 > 
-103a108,113
+114a119,124
 >         
 >         // ModLoader hook
 >         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.CITY, CustomEncounter.Group.WEAK);
+>             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.EXORDIUM, CustomEncounter.Group.WEAK);
 >         }
 >         
-112a123,128
+126a137,142
 >         
 >         // ModLoader hook
 >         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.CITY, CustomEncounter.Group.STRONG);
+>             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.EXORDIUM, CustomEncounter.Group.STRONG);
 >         }
->          
-119a136,141
+>         
+133a150,155
 >         
 >         // ModLoader hook
 >         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.CITY, CustomEncounter.Group.ELITE);
+>             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.EXORDIUM, CustomEncounter.Group.ELITE);
 >         }
 >         
-160a183,188
+181a204,209
 >             
 >             // ModLoader hook
 >             if (CardCrawlGame.modLoaderActive) {
->                 ModLoader.bossPoolHook(bossList, CustomEncounter.Floor.CITY);
+>                 ModLoader.bossPoolHook(bossList, CustomEncounter.Floor.EXORDIUM);
 >             }
 >         
-178a207,211
+202a231,235
 >         
 >         // ModLoader hook
 >         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.eventListHook(eventList, CustomEncounter.Floor.CITY);
+>             ModLoader.eventListHook(eventList, CustomEncounter.Floor.EXORDIUM);
 >         }
-197a231,235
+212a246,250
 >         
 >         // ModLoader hook
 >         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.shrineListHook(shrineList, CustomEncounter.Floor.CITY);
+>             ModLoader.shrineListHook(shrineList, CustomEncounter.Floor.EXORDIUM);
 >         }

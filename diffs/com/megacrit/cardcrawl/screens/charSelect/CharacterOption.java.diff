@@ -1,8 +1,8 @@
-43a44,46
+36a37,39
 > // ModLoader imports
 > import modloader.ModLoader;
 > 
-91a95,98
+84a88,91
 >         
 >         // ModLoader hook
 >         if (CardCrawlGame.modLoaderActive) ModLoader.charOptionHook(charInfo);
