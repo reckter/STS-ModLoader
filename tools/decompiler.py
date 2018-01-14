@@ -43,7 +43,7 @@ def GetPath(path, up):
 
 # CheckForProblems -	
 def CheckForProblems(compPath):
-	if len(os.listdir(compPath)) != SOURCE_FOLDERS_COUNT+1:
+	if len(os.listdir(compPath)) != SOURCE_FOLDERS_COUNT:
 		print("compiled does not have the correct number of folders")
 		sys.exit()
 
