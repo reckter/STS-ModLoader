@@ -15,15 +15,16 @@ Java 8+
 
 #### Advanced (Development): ####
 1. Clone repo
-2. Make a copy of 'desktop-1.0.jar' from your Slay the Spire Steam folder in the root of the repo
-3. Get 'cfr_0_124.jar' and put it in the tools folder (http://www.benf.org/other/cfr/)
-4. Create a folder named 'compiled' in the root and copy the contents of 'desktop-1.0.jar/com/megacrit/cardcrawl' into it
-5. Run '_decompile.bat', this will take a few minutes. A folder named 'decompiled' should be created
-6. Make a copy of the 'decompiled' folder created in step 5, name it 'decompiled_clean'
-7. Run 'modloader/_compile_modloader.bat'
-8. Copy the entire 'modloader' folder into the root of 'desktop-1.0.jar'
-9. Run '_patch.bat' to automatically apply the diff files to the contents of 'decompiled'
-10. Compile the following, plus whatever other files you modify:
+2. Run tools/setup.bat as admin to install required Python modules (patch).
+3. Make a copy of 'desktop-1.0.jar' from your Slay the Spire Steam folder in the root of the repo
+4. Get 'cfr_0_124.jar' and put it in the tools folder (http://www.benf.org/other/cfr/)
+5. Create a folder named 'compiled' in the root and copy the contents of 'desktop-1.0.jar/com/megacrit/cardcrawl' into it
+6. Run '_decompile.bat', this will take a few minutes. A folder named 'decompiled' should be created
+7. Make a copy of the 'decompiled' folder created in step 5, name it 'decompiled_clean'
+8. Run 'modloader/_compile_modloader.bat'
+9. Copy the entire 'modloader' folder into the root of 'desktop-1.0.jar'
+10. Run '_patch.bat' to automatically apply the diff files to the contents of 'decompiled'
+11. Compile the following, plus whatever other files you modify:
     * decompiled/core/CardCrawlGame.java
     * decompiled/dungeons/Exordium.java
     * decompiled/dungeons/TheBeyond.java
@@ -31,8 +32,8 @@ Java 8+
     * decompiled/helpers/EventHelper.java
     * decompiled/helpers/MonsterHelper.java
     * decompiled/screens/charSelect/CharacterOption.java
-11. Copy the compiled files from step 10 into the appropriate locations in 'desktop-1.0.jar'
-12. Run with _run.bat to get logger output
+12. Copy the compiled files from step 10 into the appropriate locations in 'desktop-1.0.jar'
+13. Run with _run.bat to get logger output
 
 ## Toolchain Information ##
 ### Toolchain Requirements ###
