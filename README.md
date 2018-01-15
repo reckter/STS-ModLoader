@@ -7,11 +7,32 @@ Source version: `[EARLY_ACCESS_011] (01-11-2018)`
 Java 8+
 
 ### Install instructions: ###
+#### Basic (General Use): ####
 1. Clone repo
-2. Make a copy of desktop-1.0.jar from your Slay the Spire Steam folder and do one of the following:
-  * Apply the JDF patch to it with JojoDiff (http://jojodiff.sourceforge.net/)
-  * Decompile and manually apply diffs or run _patch.bat to automatically apply them, then compile and put the resulting class files back into the JAR
-3. Run with _run.bat to get logger output
+2. Make a copy of desktop-1.0.jar from your Slay the Spire Steam folder in the root of the repo
+3. Apply the JDF patch to it with JojoDiff (http://jojodiff.sourceforge.net/)
+4. Run with _run.bat to get logger output
+
+#### Advanced (Development): ####
+1. Clone repo
+2. Make a copy of 'desktop-1.0.jar' from your Slay the Spire Steam folder in the root of the repo
+3. Get 'cfr_0_124.jar' and put it in the tools folder (http://www.benf.org/other/cfr/)
+4. Create a folder named 'compiled' in the root and copy the contents of 'desktop-1.0.jar/com/megacrit/cardcrawl' into it
+5. Run '_decompile.bat', this will take a few minutes. A folder named 'decompiled' should be created
+6. Make a copy of the 'decompiled' folder created in step 5, name it 'decompiled_clean'
+7. Run 'modloader/_compile_modloader.bat'
+8. Copy the entire 'modloader' folder into the root of 'desktop-1.0.jar'
+9. Run '_patch.bat' to automatically apply the diff files to the contents of 'decompiled'
+10. Build the following, plus whatever other files you modify:
+    * decompiled/core/CardCrawlGame.java
+    * decompiled/dungeons/Exordium.java
+    * decompiled/dungeons/TheBeyond.java
+    * decompiled/dungeons/TheCity.java
+    * decompiled/helpers/EventHelper.java
+    * decompiled/helpers/MonsterHelper.java
+    * decompiled/screens/charSelect/CharacterOption.java
+11. Copy the compiled files from step 10 into the appropriate locations in 'desktop-1.0.jar'
+12. Run with _run.bat to get logger output
 
 ## Toolchain Information ##
 ### Toolchain Requirements ###
