@@ -23,7 +23,7 @@ Java 8+
 7. Run 'modloader/_compile_modloader.bat'
 8. Copy the entire 'modloader' folder into the root of 'desktop-1.0.jar'
 9. Run '_patch.bat' to automatically apply the diff files to the contents of 'decompiled'
-10. Build the following, plus whatever other files you modify:
+10. Compile the following, plus whatever other files you modify:
     * decompiled/core/CardCrawlGame.java
     * decompiled/dungeons/Exordium.java
     * decompiled/dungeons/TheBeyond.java
