@@ -1,5 +1,5 @@
---- original
-+++ modified
+--- decompiled/helpers/MonsterHelper.java
++++ decompiled/helpers/MonsterHelper.java
 @@ -76,6 +76,10 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;

@@ -1,5 +1,5 @@
---- original
-+++ modified
+--- decompiled/core/CardCrawlGame.java
++++ decompiled/core/CardCrawlGame.java
 @@ -113,6 +113,9 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;

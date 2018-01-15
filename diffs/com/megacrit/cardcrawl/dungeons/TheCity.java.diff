@@ -1,5 +1,5 @@
---- original
-+++ modified
+--- decompiled/dungeons/TheCity.java
++++ decompiled/dungeons/TheCity.java
 @@ -27,6 +27,10 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;

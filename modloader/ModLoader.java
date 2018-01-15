@@ -326,8 +326,8 @@ public class ModLoader {
         try {
             Method prepFont = FontHelper.class.getDeclaredMethod("prepFont", new Class[]{float.class, boolean.class});
             prepFont.setAccessible(true);
-             FontHelper.cardDescFont_N = (BitmapFont) prepFont.invoke(null, size, false);
-             FontHelper.cardDescFont_L = (BitmapFont) prepFont.invoke(null, size, true);
+            FontHelper.cardDescFont_N = (BitmapFont) prepFont.invoke(null, size, false);
+            FontHelper.cardDescFont_L = (BitmapFont) prepFont.invoke(null, size, true);
         } catch (Exception e) {
             logger.error("Exception while setting font size", e);
         }
@@ -338,7 +338,7 @@ public class ModLoader {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gson = gsonBuilder.create();
     }
-            
+    
     // loadMods -
     private static ArrayList<ModContainer> loadMods() {
         ArrayList<ModContainer> mods = new ArrayList<ModContainer>();   
@@ -376,9 +376,6 @@ public class ModLoader {
             } else {
                 logger.info(modPackage + " is missing mod.json, skipping");
             }
-            
-            // Cleanup
-            logger.info(modPackage + " loaded");
         }
         
         logger.info("All mods loaded");

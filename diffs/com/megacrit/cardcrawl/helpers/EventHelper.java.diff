@@ -1,5 +1,5 @@
---- original
-+++ modified
+--- decompiled/helpers/EventHelper.java
++++ decompiled/helpers/EventHelper.java
 @@ -56,6 +56,10 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;

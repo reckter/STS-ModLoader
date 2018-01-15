@@ -3,24 +3,33 @@ Patch version: `[EARLY_ACCESS_011] (01-11-2018)`
 
 Source version: `[EARLY_ACCESS_011] (01-11-2018)`
 
-## Requirements ##
+### Mod Loader Requirements ###
 Java 8+
-Python 3.6+ (only for decompiler script)
 
-## Install instructions: ##
+### Install instructions: ###
 1. Clone repo
-2. Make a copy of desktop-1.0.jar from your Slay the Spire Steam folder and do one of the following: (MAKE SURE THE VERSION MATCHES PATCH VERSION ABOVE)
+2. Make a copy of desktop-1.0.jar from your Slay the Spire Steam folder and do one of the following:
   * Apply the JDF patch to it with JojoDiff (http://jojodiff.sourceforge.net/)
-  * Extact the classes there are diff files for, decompile, apply diffs, recompile, put back in the JAR
+  * Decompile and manually apply diffs or run _patch.bat to automatically apply them, then compile and put the resulting class files back into the JAR
 3. Run with _run.bat to get logger output
 
-## Decompiler Instructions: ##
-1. Get cfr_0_124.jar and put it in the tools folder (http://www.benf.org/other/cfr/)
-2. Create a folder named 'compiled' in the root and copy the contents of desktop-1.0.jar/com/megacrit/cardcrawl into it (there should be 29 folders)
-3. Run _decompile.bat, this will take a few minutes. A decompiled folder should be created.
+## Toolchain Information ##
+### Toolchain Requirements ###
+Java 8+
 
-## Compiler Instructions: ##
+Python 3.6+
+
+### Toolchain Setup: ###
+1. Run tools/setup.bat as admin to install required Python modules (patch).
+
+### Compiler Instructions: ###
 1. Drag and drop a .java file onto _compile.bat
+
+### Decompiler Instructions: ###
+1. Get cfr_0_124.jar and put it in the tools folder (http://www.benf.org/other/cfr/)
+2. Create a folder named 'compiled' in the root and copy the contents of desktop-1.0.jar/com/megacrit/cardcrawl into it
+3. Run _decompile.bat, this will take a few minutes. A decompiled folder should be created.
+4. (OPTIONAL) Run _patch.bat to automatically apply diffs to the decompiled files
 
 ## Mod Package Structure ##
 ```
@@ -99,12 +108,13 @@ Weight should be 0.0 on boss encounters, can be any float on other encounters
         "floor": "EXORDIUM/CITY/BEYOND"
     }],
     "customEncounters": [{
-        "id": "TestSquare",
+        "id": "",
         "floor": "EXORDIUM/CITY/BEYOND",
         "group": "WEAK/STRONG/ELITE/BOSS",
         "weight": 1.0,
         "monsters": [
-            "TestSquare"
+            "",
+            ""
         ]
     }]
 }

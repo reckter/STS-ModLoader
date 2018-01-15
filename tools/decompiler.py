@@ -57,7 +57,7 @@ def Decompile(filePath, cfrPath):
 	os.makedirs(os.path.dirname(outPath), exist_ok=True)
 	
 	outFile = open(outPath, "w+")
-	outFile.write(decompiled.decode("ascii"))
+	outFile.write(decompiled.decode("utf-8"))
 	outFile.close()
 	
 	return filePath.split("\\")[-1]
