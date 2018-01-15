@@ -1,45 +1,88 @@
-29a30,33
-> // ModLoader imports
-> import modloader.CustomEncounter;
-> import modloader.ModLoader;
-> 
-97a102,107
->         
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.CITY, CustomEncounter.Group.WEAK);
->         }
->         
-106a117,122
->         
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.CITY, CustomEncounter.Group.STRONG);
->         }
->          
-113a130,135
->         
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.CITY, CustomEncounter.Group.ELITE);
->         }
->         
-154a177,182
->             
->             // ModLoader hook
->             if (CardCrawlGame.modLoaderActive) {
->                 ModLoader.bossPoolHook(bossList, CustomEncounter.Floor.CITY);
->             }
->         
-172a201,205
->         
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.eventListHook(eventList, CustomEncounter.Floor.CITY);
->         }
-191a225,229
->         
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.shrineListHook(shrineList, CustomEncounter.Floor.CITY);
->         }
+--- original
++++ modified
+@@ -27,6 +27,10 @@
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ 
++// ModLoader imports
++import modloader.CustomEncounter;
++import modloader.ModLoader;
++
+ public class TheCity
+ extends AbstractDungeon {
+     private static final Logger logger = LogManager.getLogger((String)TheCity.class.getName());
+@@ -95,6 +99,12 @@
+         monsters.add(new MonsterInfo("3 Byrds", 2.0f));
+         monsters.add(new MonsterInfo("2 Thieves", 2.0f));
+         MonsterInfo.normalizeWeights(monsters);
++        
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.CITY, CustomEncounter.Group.WEAK);
++        }
++        
+         this.populateMonsterList(monsters, 2, false);
+         monsters.clear();
+         monsters.add(new MonsterInfo("Chosen and Byrds", 2.0f));
+@@ -104,6 +114,12 @@
+         monsters.add(new MonsterInfo("Snecko", 4.0f));
+         monsters.add(new MonsterInfo("Centurion and Healer", 6.0f));
+         monsters.add(new MonsterInfo("3 Cultists", 4.0f));
++        
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.CITY, CustomEncounter.Group.STRONG);
++        }
++         
+         MonsterInfo.normalizeWeights(monsters);
+         this.populateFirstStrongEnemy(monsters, this.generateExclusions());
+         this.populateMonsterList(monsters, 12, false);
+@@ -111,6 +127,12 @@
+         monsters.add(new MonsterInfo("Gremlin Leader", 1.0f));
+         monsters.add(new MonsterInfo("Slavers", 1.0f));
+         monsters.add(new MonsterInfo("Book of Stabbing", 1.0f));
++        
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.CITY, CustomEncounter.Group.ELITE);
++        }
++        
+         MonsterInfo.normalizeWeights(monsters);
+         this.populateMonsterList(monsters, 5, true);
+         logger.info("Random counter: " + TheCity.monsterRng.counter);
+@@ -152,6 +174,12 @@
+             bossList.add("Automaton");
+             bossList.add("Collector");
+             bossList.add("Champ");
++            
++            // ModLoader hook
++            if (CardCrawlGame.modLoaderActive) {
++                ModLoader.bossPoolHook(bossList, CustomEncounter.Floor.CITY);
++            }
++        
+             Collections.shuffle(bossList);
+         }
+     }
+@@ -170,6 +198,11 @@
+         eventList.add("Cursed Tome");
+         eventList.add("The Library");
+         eventList.add("Forgotten Altar");
++        
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            ModLoader.eventListHook(eventList, CustomEncounter.Floor.CITY);
++        }
+     }
+ 
+     @Override
+@@ -189,5 +222,10 @@
+         shrineList.add("Transmorgrifier");
+         shrineList.add("Purifier");
+         shrineList.add("Upgrade Shrine");
++        
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            ModLoader.shrineListHook(shrineList, CustomEncounter.Floor.CITY);
++        }
+     }
+ }

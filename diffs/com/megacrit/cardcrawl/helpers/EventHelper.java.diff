@@ -1,12 +1,26 @@
-58a59,62
-> // ModLoader imports
-> import com.megacrit.cardcrawl.core.CardCrawlGame;
-> import modloader.ModLoader;
-> 
-158a163,168
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             AbstractEvent customEvent = ModLoader.customEventHook(key);
->             if (customEvent != null) return customEvent;
->         }
->         
+--- original
++++ modified
+@@ -56,6 +56,10 @@
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ 
++// ModLoader imports
++import com.megacrit.cardcrawl.core.CardCrawlGame;
++import modloader.ModLoader;
++
+ public class EventHelper {
+     private static final Logger logger = LogManager.getLogger((String)EventHelper.class.getName());
+     private static final float BASE_ELITE_CHANCE = 0.02f;
+@@ -156,6 +160,12 @@
+     }
+ 
+     public static AbstractEvent getEvent(String key) {
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            AbstractEvent customEvent = ModLoader.customEventHook(key);
++            if (customEvent != null) return customEvent;
++        }
++        
+         switch (key) {
+             case "Accursed Blacksmith": {
+                 return new AccursedBlacksmith();

@@ -1,45 +1,88 @@
-26a27,30
-> // ModLoader imports
-> import modloader.CustomEncounter;
-> import modloader.ModLoader;
-> 
-92a97,102
->         
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.BEYOND, CustomEncounter.Group.WEAK);
->         }
->         
-103a114,119
->         
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.BEYOND, CustomEncounter.Group.STRONG);
->         }
->         
-110a127,132
->         
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.BEYOND, CustomEncounter.Group.ELITE);
->         }
->         
-151a174,179
->             
->             // ModLoader hook
->             if (CardCrawlGame.modLoaderActive) {
->                 ModLoader.bossPoolHook(bossList, CustomEncounter.Floor.BEYOND);
->             }
->         
-162a191,195
->         
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.eventListHook(eventList, CustomEncounter.Floor.BEYOND);
->         }
-181a215,219
->         
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.shrineListHook(shrineList, CustomEncounter.Floor.BEYOND);
->         }
+--- original
++++ modified
+@@ -24,6 +24,10 @@
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ 
++// ModLoader imports
++import modloader.CustomEncounter;
++import modloader.ModLoader;
++
+ public class TheBeyond
+ extends AbstractDungeon {
+     private static final Logger logger = LogManager.getLogger((String)TheBeyond.class.getName());
+@@ -90,6 +94,12 @@
+         monsters.add(new MonsterInfo("3 Darklings", 2.0f));
+         monsters.add(new MonsterInfo("Orb Walker", 2.0f));
+         monsters.add(new MonsterInfo("3 Shapes", 2.0f));
++        
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.BEYOND, CustomEncounter.Group.WEAK);
++        }
++        
+         MonsterInfo.normalizeWeights(monsters);
+         this.populateMonsterList(monsters, 2, false);
+         monsters.clear();
+@@ -101,6 +111,12 @@
+         monsters.add(new MonsterInfo("Maw", 1.0f));
+         monsters.add(new MonsterInfo("Sphere and 2 Shapes", 1.0f));
+         monsters.add(new MonsterInfo("3 Darklings", 1.0f));
++        
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.BEYOND, CustomEncounter.Group.STRONG);
++        }
++        
+         MonsterInfo.normalizeWeights(monsters);
+         this.populateFirstStrongEnemy(monsters, this.generateExclusions());
+         this.populateMonsterList(monsters, 12, false);
+@@ -108,6 +124,12 @@
+         monsters.add(new MonsterInfo("Giant Head", 2.0f));
+         monsters.add(new MonsterInfo("Nemesis", 2.0f));
+         monsters.add(new MonsterInfo("2 Orb Walkers", 2.0f));
++        
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.BEYOND, CustomEncounter.Group.ELITE);
++        }
++        
+         MonsterInfo.normalizeWeights(monsters);
+         this.populateMonsterList(monsters, 5, true);
+         logger.info("Random counter: " + TheBeyond.monsterRng.counter);
+@@ -149,6 +171,12 @@
+             bossList.add("Awakened One");
+             bossList.add("Time Eater");
+             bossList.add("Donu and Deca");
++            
++            // ModLoader hook
++            if (CardCrawlGame.modLoaderActive) {
++                ModLoader.bossPoolHook(bossList, CustomEncounter.Floor.BEYOND);
++            }
++        
+             Collections.shuffle(bossList);
+         }
+     }
+@@ -160,6 +188,11 @@
+         eventList.add("Mysterious Sphere");
+         eventList.add("Tomb of Lord Red Mask");
+         eventList.add("Winding Halls");
++        
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            ModLoader.eventListHook(eventList, CustomEncounter.Floor.BEYOND);
++        }
+     }
+ 
+     @Override
+@@ -179,5 +212,10 @@
+         shrineList.add("Transmorgrifier");
+         shrineList.add("Purifier");
+         shrineList.add("Upgrade Shrine");
++        
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            ModLoader.shrineListHook(shrineList, CustomEncounter.Floor.BEYOND);
++        }
+     }
+ }

@@ -1,33 +1,69 @@
-115a116,118
-> // ModLoader imports
-> import modloader.ModLoader;
-> 
-170a174,176
->     // ModLoader variables
->     public static boolean modLoaderActive;
->     
-243,244c249,256
-<             }
-<         }
----
->             }   
-> 
->             // ModLoader initialization
->             String jarPath = CardCrawlGame.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
->             jarPath = jarPath.substring(0, jarPath.lastIndexOf("/"));
->             
->             ModLoader.initialize(jarPath + "/mods/");
->         } 
-294c306
-<         Map map = p.get();
----
->         Map<?,?> map = p.get();
-497a510,512
->         // ModLoader hook
->         if (modLoaderActive) ModLoader.updateHook();
->         
-569a585,588
->                         
->                         // ModLoader hook
->                         if (modLoaderActive) ModLoader.startGameHook();
->                         
+--- original
++++ modified
+@@ -113,6 +113,9 @@
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ 
++// ModLoader imports
++import modloader.ModLoader;
++
+ public class CardCrawlGame
+ implements ApplicationListener {
+     public static String VERSION_NUM = "[EARLY_ACCESS_011] (01-11-2018)";
+@@ -168,6 +171,9 @@
+     public static String preferenceDir;
+     private static final Logger logger;
+ 
++    // ModLoader variables
++    public static boolean modLoaderActive;
++    
+     public CardCrawlGame(String prefDir) {
+         preferenceDir = prefDir;
+     }
+@@ -240,8 +246,14 @@
+             mode = GameMode.SPLASH;
+             if (Settings.isDebug) {
+                 CardCrawlGame.splashScreen.isDone = true;
+-            }
+-        }
++            }   
++
++            // ModLoader initialization
++            String jarPath = CardCrawlGame.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
++            jarPath = jarPath.substring(0, jarPath.lastIndexOf("/"));
++            
++            ModLoader.initialize(jarPath + "/mods/");
++        } 
+         catch (Exception e) {
+             ExceptionHandler.handleException(e, logger);
+             Gdx.app.exit();
+@@ -291,7 +303,7 @@
+     public void migrateHelper(String file) {
+         Preferences p = Gdx.app.getPreferences(file);
+         Prefs p2 = SaveHelper.getPrefs(file);
+-        Map map = p.get();
++        Map<?,?> map = p.get();
+         for (Map.Entry c : map.entrySet()) {
+             p2.putString((String)c.getKey(), p.getString((String)c.getKey()));
+         }
+@@ -495,6 +507,9 @@
+     }
+ 
+     public void update() {
++        // ModLoader hook
++        if (modLoaderActive) ModLoader.updateHook();
++        
+         cursor.update();
+         screenShake.update(viewport);
+         if (mode != GameMode.SPLASH) {
+@@ -567,6 +582,10 @@
+                         }
+                         monstersSlain = 0;
+                         elitesSlain = 0;
++                        
++                        // ModLoader hook
++                        if (modLoaderActive) ModLoader.startGameHook();
++                        
+                         break;
+                     }
+                     if (!Settings.isTrial) break;

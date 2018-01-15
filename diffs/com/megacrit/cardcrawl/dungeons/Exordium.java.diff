@@ -1,45 +1,89 @@
-33a34,37
-> // ModLoader imports
-> import modloader.CustomEncounter;
-> import modloader.ModLoader;
-> 
-114a119,124
->         
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.EXORDIUM, CustomEncounter.Group.WEAK);
->         }
->         
-126a137,142
->         
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.EXORDIUM, CustomEncounter.Group.STRONG);
->         }
->         
-133a150,155
->         
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.EXORDIUM, CustomEncounter.Group.ELITE);
->         }
->         
-181a204,209
->             
->             // ModLoader hook
->             if (CardCrawlGame.modLoaderActive) {
->                 ModLoader.bossPoolHook(bossList, CustomEncounter.Floor.EXORDIUM);
->             }
->         
-202a231,235
->         
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.eventListHook(eventList, CustomEncounter.Floor.EXORDIUM);
->         }
-212a246,250
->         
->         // ModLoader hook
->         if (CardCrawlGame.modLoaderActive) {
->             ModLoader.shrineListHook(shrineList, CustomEncounter.Floor.EXORDIUM);
->         }
+--- original
++++ modified
+@@ -31,6 +31,10 @@
+ import java.util.Collections;
+ import java.util.HashMap;
+ 
++// ModLoader imports
++import modloader.CustomEncounter;
++import modloader.ModLoader;
++
+ public class Exordium
+ extends AbstractDungeon {
+     private static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString("Exordium");
+@@ -112,6 +116,12 @@
+         monsters.add(new MonsterInfo("Jaw Worm", 2.0f));
+         monsters.add(new MonsterInfo("2 Louse", 2.0f));
+         monsters.add(new MonsterInfo("Small Slimes", 2.0f));
++        
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.EXORDIUM, CustomEncounter.Group.WEAK);
++        }
++        
+         MonsterInfo.normalizeWeights(monsters);
+         this.populateMonsterList(monsters, 3, false);
+         monsters.clear();
+@@ -124,6 +134,12 @@
+         monsters.add(new MonsterInfo("Red Slaver", 1.0f));
+         monsters.add(new MonsterInfo("3 Louse", 2.0f));
+         monsters.add(new MonsterInfo("2 Fungi Beasts", 2.0f));
++        
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.EXORDIUM, CustomEncounter.Group.STRONG);
++        }
++        
+         MonsterInfo.normalizeWeights(monsters);
+         this.populateFirstStrongEnemy(monsters, this.generateExclusions());
+         this.populateMonsterList(monsters, 12, false);
+@@ -131,6 +147,12 @@
+         monsters.add(new MonsterInfo("Gremlin Nob", 1.0f));
+         monsters.add(new MonsterInfo("Lagavulin", 1.0f));
+         monsters.add(new MonsterInfo("3 Sentries", 1.0f));
++        
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            ModLoader.monsterPoolHook(monsters, CustomEncounter.Floor.EXORDIUM, CustomEncounter.Group.ELITE);
++        }
++        
+         MonsterInfo.normalizeWeights(monsters);
+         this.populateMonsterList(monsters, 5, true);
+     }
+@@ -179,6 +201,12 @@
+             bossList.add("The Guardian");
+             bossList.add("Hexaghost");
+             bossList.add("Slime Boss");
++            
++            // ModLoader hook
++            if (CardCrawlGame.modLoaderActive) {
++                ModLoader.bossPoolHook(bossList, CustomEncounter.Floor.EXORDIUM);
++            }
++        
+             Collections.shuffle(bossList);
+         }
+         if (Settings.isDemo) {
+@@ -200,6 +228,11 @@
+         eventList.add("Mushrooms");
+         eventList.add("Scrap Ooze");
+         eventList.add("Shining Light");
++        
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            ModLoader.eventListHook(eventList, CustomEncounter.Floor.EXORDIUM);
++        }
+     }
+ 
+     @Override
+@@ -210,6 +243,11 @@
+         shrineList.add("Purifier");
+         shrineList.add("Upgrade Shrine");
+         shrineList.add("Wheel of Change");
++        
++        // ModLoader hook
++        if (CardCrawlGame.modLoaderActive) {
++            ModLoader.shrineListHook(shrineList, CustomEncounter.Floor.EXORDIUM);
++        }
+     }
+ 
+     @Override
