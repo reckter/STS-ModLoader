@@ -1,5 +1,5 @@
---- decompiled/helpers/EventHelper.java
-+++ decompiled/helpers/EventHelper.java
+--- decompiled/helpers/EventHelper.java	2018-01-14 13:59:45.904864300 -0800
++++ decompiled/helpers/EventHelper.java	2018-01-14 19:05:52.601320300 -0800
 @@ -56,6 +56,10 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;

@@ -1,5 +1,5 @@
---- decompiled/dungeons/TheBeyond.java
-+++ decompiled/dungeons/TheBeyond.java
+--- decompiled/dungeons/TheBeyond.java	2018-01-14 13:59:21.782681600 -0800
++++ decompiled/dungeons/TheBeyond.java	2018-01-14 19:05:52.401790300 -0800
 @@ -24,6 +24,10 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;

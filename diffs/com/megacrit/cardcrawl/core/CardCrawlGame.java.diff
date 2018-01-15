@@ -1,5 +1,5 @@
---- decompiled/core/CardCrawlGame.java
-+++ decompiled/core/CardCrawlGame.java
+--- decompiled/core/CardCrawlGame.java	2018-01-14 13:59:14.756429100 -0800
++++ decompiled/core/CardCrawlGame.java	2018-01-14 19:05:52.196126500 -0800
 @@ -113,6 +113,9 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
@@ -15,7 +15,7 @@
      private static final Logger logger;
  
 +    // ModLoader variables
-+    public static boolean modLoaderActive;
++    public static boolean modLoaderActive = true;
 +    
      public CardCrawlGame(String prefDir) {
          preferenceDir = prefDir;

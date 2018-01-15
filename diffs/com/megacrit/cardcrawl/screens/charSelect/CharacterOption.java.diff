@@ -1,5 +1,5 @@
---- decompiled/screens/charSelect/CharacterOption.java
-+++ decompiled/screens/charSelect/CharacterOption.java
+--- decompiled/screens/charSelect/CharacterOption.java	2018-01-14 14:01:16.488419700 -0800
++++ decompiled/screens/charSelect/CharacterOption.java	2018-01-14 19:05:52.800165100 -0800
 @@ -34,6 +34,9 @@
  import com.megacrit.cardcrawl.unlock.UnlockTracker;
  import java.util.ArrayList;

@@ -1,5 +1,5 @@
---- decompiled/helpers/MonsterHelper.java
-+++ decompiled/helpers/MonsterHelper.java
+--- decompiled/helpers/MonsterHelper.java	2018-01-14 13:59:49.240069400 -0800
++++ decompiled/helpers/MonsterHelper.java	2018-01-14 19:05:52.700915900 -0800
 @@ -76,6 +76,10 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;

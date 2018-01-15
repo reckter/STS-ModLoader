@@ -23,7 +23,8 @@ Python 3.6+
 1. Run tools/setup.bat as admin to install required Python modules (patch).
 
 ### Compiler Instructions: ###
-1. Drag and drop a .java file onto _compile.bat
+1. (If needed) Build the modloader package by running modloader/_compile_modloader.bat
+2. Drag and drop a .java file onto _compile.bat
 
 ### Decompiler Instructions: ###
 1. Get cfr_0_124.jar and put it in the tools folder (http://www.benf.org/other/cfr/)

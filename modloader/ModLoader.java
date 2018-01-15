@@ -72,7 +72,6 @@ public class ModLoader {
         modRootPath = path;  
         hijackClassLoader();
         
-        CardCrawlGame.modLoaderActive = true;
         CardCrawlGame.VERSION_NUM += " [MODLOADER ACTIVE]";
         Settings.isModded = true;
         
@@ -93,8 +92,6 @@ public class ModLoader {
         specialHealth.put("Strawberry", 7);
         specialHealth.put("Pear", 10);
         specialHealth.put("Mango", 14);
-
-        //setFontSize(22.0f);
         
         initializeGson();
         
@@ -146,12 +143,7 @@ public class ModLoader {
     
     // startGameHook -
     public static void startGameHook() {
-        logger.info("====================== MOD LOADER START GAME ======================");
-        logger.info("");
-        
         modifyCharacter();
-        
-        logger.info("===================================================================");
     }
     
     // charOptionHook - 
