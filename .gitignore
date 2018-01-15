@@ -23,8 +23,10 @@ hs_err_pid*
 
 # Custom
 backup/
-compiled/
+crashlogs/
 decompiled/
 decompiled_clean/
 preferences/
+tools/jdiff.exe
+tools/jptch.exe
 info.displayconfig

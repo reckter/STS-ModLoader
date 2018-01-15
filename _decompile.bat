@@ -1,3 +1,2 @@
 @echo off
-python .\tools\decompiler.py
-pause
+java -jar "tools/cfr_0_124.jar" --comments false --showversion false --caseinsensitivefs true --outputdir decompiled --jarfilter com.megacrit.cardcrawl.* "desktop-1.0.jar"
