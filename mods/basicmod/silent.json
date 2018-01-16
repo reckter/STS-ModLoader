@@ -1,9 +1,24 @@
 {
     "addCards": [
+        "Rampage",
+        "Concentrate"
     ],
     "removeCards": [
+        "Strike_G",
+        "Strike_G",
+        "Strike_G",
+        "Strike_G",
+        "Strike_G",
+        "Defend_G",
+        "Defend_G",
+        "Defend_G",
+        "Defend_G",
+        "Defend_G",
+        "Survivor",
+        "Neutralize"
     ],
     "addRelics": [
+        "Unceasing Top"
     ],
     "removeRelics": [
     ]
