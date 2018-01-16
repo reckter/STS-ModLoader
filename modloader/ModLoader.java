@@ -48,6 +48,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+// Java 9 Testing
+//import java.lang.ModuleLayer;
+
 public class ModLoader {
     private static final Logger logger = LogManager.getLogger(ModLoader.class.getName());
       
@@ -67,13 +70,30 @@ public class ModLoader {
     // initialize -
     public static void initialize(String path) {
         logger.info("========================= MOD LOADER INIT =========================");
-        logger.info("");
-        
-        modRootPath = path;  
-        hijackClassLoader();
         
         CardCrawlGame.VERSION_NUM += " [MODLOADER ACTIVE]";
-        Settings.isModded = true;
+        Settings.isModded = true; 
+        
+        // This is missing some
+        specialHealth.put("Strawberry", 7);
+        specialHealth.put("Pear", 10);
+        specialHealth.put("Mango", 14);
+        
+        modRootPath = path;  
+        buildClassLoader();
+        initializeGson(); 
+        
+        mods = loadMods();  
+          
+        loadCustomEventStrings();
+        loadCustomRelicStrings();
+        loadCustomKeywords();
+         
+        loadCustomEvents();
+        loadCustomMonsters();
+        
+        generateCustomCards();
+        generateCustomRelics();
         
         if (isDev) {
             CardCrawlGame.splashScreen.isDone = true;
@@ -88,25 +108,8 @@ public class ModLoader {
             Settings.ACTION_DUR_XLONG = 1.5f;
         }
         
-        // This is missing some
-        specialHealth.put("Strawberry", 7);
-        specialHealth.put("Pear", 10);
-        specialHealth.put("Mango", 14);
-        
-        initializeGson();
-        
-        mods = loadMods();  
-        
-        loadCustomRelicStrings();
-        loadCustomEventStrings();
-        loadCustomKeywords();
-        
-        generateCustomCards();
-        generateCustomRelics();
-        loadCustomEvents();
-        loadCustomMonsters();
-        
         logger.info("===================================================================");
+        
     }
     
     // updateHook - Hotkeys
@@ -371,7 +374,6 @@ public class ModLoader {
         }
         
         logger.info("All mods loaded");
-        logger.info("");
         return mods;
     }
     
@@ -391,7 +393,6 @@ public class ModLoader {
         setPrivateStaticFinal(LocalizedStrings.class, "relics", relicStrings);
         
         logger.info("All custom RelicStrings loaded");
-        logger.info("");
     }
     
     // loadCustomEventStrings -
@@ -410,7 +411,6 @@ public class ModLoader {
         setPrivateStaticFinal(LocalizedStrings.class, "events", eventStrings);
         
         logger.info("All custom EventStrings loaded");
-        logger.info("");
     }
     
     // loadCustomKeywords -
@@ -427,7 +427,6 @@ public class ModLoader {
         GameDictionary.keywords.putAll(customKeywords);
         
         logger.info("All custom keywords loaded");
-        logger.info("");
     }
     
     // generateCustomCards -
@@ -457,7 +456,6 @@ public class ModLoader {
         }
         
         logger.info("All custom cards generated");
-        logger.info("");
     }
     
     // generateCustomRelics -
@@ -485,7 +483,6 @@ public class ModLoader {
         }
         
         logger.info("All custom relics generated");
-        logger.info("");
     }
     
     // loadCustomEvents -
@@ -505,7 +502,6 @@ public class ModLoader {
         }
         
         logger.info("All custom events loaded");
-        logger.info("");
     }
     
     // loadCustomMonsters -
@@ -526,7 +522,6 @@ public class ModLoader {
         }
         
         logger.info("All custom monsters loaded");
-        logger.info("");
     }
     
     // modifyCharacter -
@@ -590,19 +585,13 @@ public class ModLoader {
         return Gdx.files.absolute(path).readString(String.valueOf(StandardCharsets.UTF_8));
     }
     
-    // hijackClassLoader - Hijack the system ClassLoader for our use so we can cast properly
-    // If anyone knows a way to make casting work without hijacking the system ClassLoader, let me know
-    private static void hijackClassLoader() {
+    // buildClassLoader - Creates a child ClassLoader of the system ClassLoader to be used to bring in mod class files
+    private static void buildClassLoader() {
         try {
-            File modRoot = new File(modRootPath);
-            
-            loader = ClassLoader.getSystemClassLoader();
-            Class<URLClassLoader> loaderClass = URLClassLoader.class;
-            Method addUrl = loaderClass.getDeclaredMethod("addURL", new Class[]{URL.class});
-            addUrl.setAccessible(true);
-            addUrl.invoke(loader, new Object[]{modRoot.toURI().toURL()});
+            URL modRootURL = new File(modRootPath).toURI().toURL();
+            loader = new URLClassLoader(new URL[]{modRootURL}, ClassLoader.getSystemClassLoader());
         } catch (Exception e) {
-            logger.error("Exception occured while hijacking system ClassLoader: ", e);
+            logger.error("", e);
         }
     }
     

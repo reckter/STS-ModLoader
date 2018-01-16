@@ -27,6 +27,8 @@ crashlogs/
 decompiled/
 decompiled_clean/
 preferences/
+saves/
 tools/jdiff.exe
 tools/jptch.exe
+_runJ9.bat
 info.displayconfig
