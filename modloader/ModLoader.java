@@ -48,9 +48,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-// Java 9 Testing
-//import java.lang.ModuleLayer;
-
 public class ModLoader {
     private static final Logger logger = LogManager.getLogger(ModLoader.class.getName());
       

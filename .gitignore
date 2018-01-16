@@ -22,6 +22,7 @@
 hs_err_pid*
 
 # Custom
+_archive/
 backup/
 crashlogs/
 decompiled/
