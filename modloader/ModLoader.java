@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
@@ -311,6 +312,11 @@ public class ModLoader {
                 }
             }
         }
+    }
+    
+    // gameActionCreateHook -
+    public static void gameActionCreateHook(AbstractGameAction action) {
+        logger.info(action.getClass().getName());
     }
     
     // setFontSize -

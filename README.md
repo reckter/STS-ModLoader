@@ -23,13 +23,14 @@ Java 8+
 7. Copy the entire 'modloader' folder into the root of 'desktop-1.0.jar'
 8. Run '_patch.bat' to automatically apply the diff files to the contents of 'decompiled'
 9. Compile the following, plus whatever other files you modify:
-    * decompiled/core/CardCrawlGame.java
-    * decompiled/dungeons/Exordium.java
-    * decompiled/dungeons/TheBeyond.java
-    * decompiled/dungeons/TheCity.java
-    * decompiled/helpers/EventHelper.java
-    * decompiled/helpers/MonsterHelper.java
-    * decompiled/screens/charSelect/CharacterOption.java
+    * decompiled/com/megacrit/cardcrawl/actions/AbstractGameAction.java
+    * decompiled/com/megacrit/cardcrawl/core/CardCrawlGame.java
+    * decompiled/com/megacrit/cardcrawl/dungeons/Exordium.java
+    * decompiled/com/megacrit/cardcrawl/dungeons/TheBeyond.java
+    * decompiled/com/megacrit/cardcrawl/dungeons/TheCity.java
+    * decompiled/com/megacrit/cardcrawl/helpers/EventHelper.java
+    * decompiled/com/megacrit/cardcrawl/helpers/MonsterHelper.java
+    * decompiled/com/megacrit/cardcrawl/screens/charSelect/CharacterOption.java
 10. Copy the compiled files from step 9 into the appropriate locations in 'desktop-1.0.jar'
 11. Run with _run.bat to get logger output
 
