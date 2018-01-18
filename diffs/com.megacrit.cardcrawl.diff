@@ -1,6 +1,32 @@
+diff -ru decompiled/com/megacrit/cardcrawl/actions/AbstractGameAction.java decompiled/com/megacrit/cardcrawl/actions/AbstractGameAction.java
+--- decompiled/com/megacrit/cardcrawl/actions/AbstractGameAction.java	2018-01-15 12:56:21.591199200 -0800
++++ decompiled/com/megacrit/cardcrawl/actions/AbstractGameAction.java	2018-01-17 13:30:03.067083700 -0800
+@@ -9,6 +9,10 @@
+ import com.megacrit.cardcrawl.core.AbstractCreature;
+ import com.megacrit.cardcrawl.monsters.AbstractMonster;
+ 
++// ModLoader imports
++import com.megacrit.cardcrawl.core.CardCrawlGame;
++import modloader.ModLoader;
++
+ public abstract class AbstractGameAction {
+     protected float DEFAULT_DURATION = 0.5f;
+     protected float duration;
+@@ -20,6 +24,11 @@
+     public AbstractCreature target;
+     public AbstractCreature source;
+ 
++    // ModLoader hook
++    public AbstractGameAction() {
++        if (CardCrawlGame.modLoaderActive) ModLoader.gameActionCreateHook(this);
++    }
++    
+     protected void setValues(AbstractCreature target, DamageInfo info) {
+         this.target = target;
+         this.source = info.owner;
 diff -ru decompiled/com/megacrit/cardcrawl/core/CardCrawlGame.java decompiled/com/megacrit/cardcrawl/core/CardCrawlGame.java
 --- decompiled/com/megacrit/cardcrawl/core/CardCrawlGame.java	2018-01-15 12:56:25.071832900 -0800
-+++ decompiled/com/megacrit/cardcrawl/core/CardCrawlGame.java	2018-01-15 14:02:44.482084600 -0800
++++ decompiled/com/megacrit/cardcrawl/core/CardCrawlGame.java	2018-01-16 00:08:20.110579300 -0800
 @@ -113,6 +113,9 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
@@ -73,7 +99,7 @@ diff -ru decompiled/com/megacrit/cardcrawl/core/CardCrawlGame.java decompiled/co
                      if (!Settings.isTrial) break;
 diff -ru decompiled/com/megacrit/cardcrawl/dungeons/Exordium.java decompiled/com/megacrit/cardcrawl/dungeons/Exordium.java
 --- decompiled/com/megacrit/cardcrawl/dungeons/Exordium.java	2018-01-15 12:56:25.601841800 -0800
-+++ decompiled/com/megacrit/cardcrawl/dungeons/Exordium.java	2018-01-15 13:19:29.815955000 -0800
++++ decompiled/com/megacrit/cardcrawl/dungeons/Exordium.java	2018-01-16 00:08:20.112080800 -0800
 @@ -31,6 +31,10 @@
  import java.util.Collections;
  import java.util.HashMap;
@@ -163,7 +189,7 @@ diff -ru decompiled/com/megacrit/cardcrawl/dungeons/Exordium.java decompiled/com
      @Override
 diff -ru decompiled/com/megacrit/cardcrawl/dungeons/TheBeyond.java decompiled/com/megacrit/cardcrawl/dungeons/TheBeyond.java
 --- decompiled/com/megacrit/cardcrawl/dungeons/TheBeyond.java	2018-01-15 12:56:25.612852100 -0800
-+++ decompiled/com/megacrit/cardcrawl/dungeons/TheBeyond.java	2018-01-15 13:19:29.817456500 -0800
++++ decompiled/com/megacrit/cardcrawl/dungeons/TheBeyond.java	2018-01-16 00:08:20.113581900 -0800
 @@ -24,6 +24,10 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
@@ -253,7 +279,7 @@ diff -ru decompiled/com/megacrit/cardcrawl/dungeons/TheBeyond.java decompiled/co
  
 diff -ru decompiled/com/megacrit/cardcrawl/dungeons/TheCity.java decompiled/com/megacrit/cardcrawl/dungeons/TheCity.java
 --- decompiled/com/megacrit/cardcrawl/dungeons/TheCity.java	2018-01-15 12:56:25.624863900 -0800
-+++ decompiled/com/megacrit/cardcrawl/dungeons/TheCity.java	2018-01-15 13:19:29.819458600 -0800
++++ decompiled/com/megacrit/cardcrawl/dungeons/TheCity.java	2018-01-16 00:08:20.115584300 -0800
 @@ -27,6 +27,10 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
@@ -343,7 +369,7 @@ diff -ru decompiled/com/megacrit/cardcrawl/dungeons/TheCity.java decompiled/com/
  
 diff -ru decompiled/com/megacrit/cardcrawl/helpers/EventHelper.java decompiled/com/megacrit/cardcrawl/helpers/EventHelper.java
 --- decompiled/com/megacrit/cardcrawl/helpers/EventHelper.java	2018-01-15 12:56:26.418125600 -0800
-+++ decompiled/com/megacrit/cardcrawl/helpers/EventHelper.java	2018-01-15 13:19:29.820960000 -0800
++++ decompiled/com/megacrit/cardcrawl/helpers/EventHelper.java	2018-01-16 00:08:20.117085800 -0800
 @@ -56,6 +56,10 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
@@ -370,7 +396,7 @@ diff -ru decompiled/com/megacrit/cardcrawl/helpers/EventHelper.java decompiled/c
                  return new AccursedBlacksmith();
 diff -ru decompiled/com/megacrit/cardcrawl/helpers/MonsterHelper.java decompiled/com/megacrit/cardcrawl/helpers/MonsterHelper.java
 --- decompiled/com/megacrit/cardcrawl/helpers/MonsterHelper.java	2018-01-15 12:56:26.820511800 -0800
-+++ decompiled/com/megacrit/cardcrawl/helpers/MonsterHelper.java	2018-01-15 13:19:29.822961800 -0800
++++ decompiled/com/megacrit/cardcrawl/helpers/MonsterHelper.java	2018-01-16 00:08:20.118587000 -0800
 @@ -76,6 +76,10 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
@@ -397,7 +423,7 @@ diff -ru decompiled/com/megacrit/cardcrawl/helpers/MonsterHelper.java decompiled
                  return new MonsterGroup(new SlaverBlue(0.0f, 0.0f));
 diff -ru decompiled/com/megacrit/cardcrawl/screens/charSelect/CharacterOption.java decompiled/com/megacrit/cardcrawl/screens/charSelect/CharacterOption.java
 --- decompiled/com/megacrit/cardcrawl/screens/charSelect/CharacterOption.java	2018-01-15 12:56:29.549129500 -0800
-+++ decompiled/com/megacrit/cardcrawl/screens/charSelect/CharacterOption.java	2018-01-15 13:19:29.824463300 -0800
++++ decompiled/com/megacrit/cardcrawl/screens/charSelect/CharacterOption.java	2018-01-16 00:08:20.120088400 -0800
 @@ -34,6 +34,9 @@
  import com.megacrit.cardcrawl.unlock.UnlockTracker;
  import java.util.ArrayList;
