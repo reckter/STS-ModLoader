@@ -27,9 +27,13 @@ backup/
 crashlogs/
 decompiled/
 decompiled_clean/
+compiled/
 preferences/
 saves/
 tools/jdiff.exe
 tools/jptch.exe
 _runJ9.bat
 info.displayconfig
+.idea
+.DS_Store
+*.iml
