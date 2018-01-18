@@ -1,8 +1,5 @@
 #!/bin/bash
+# Author: github.com/reckter (Hannes Güdelhöfer)
 
-patches=$(find ./diffs -name "*.diff")
-
-while read line
-do
-    cat $line | patch -p0
-done <<< "$patches"
+# patches the diff onto the decompiled folder
+patch -p0 < ./diffs/com.megacrit.cardcrawl.diff
